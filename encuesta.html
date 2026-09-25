@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evaluación NOM-035</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B2545;--navy2:#13315C;--gold:#C9A227;--gold-soft:#F4EBCB;
+  --bg:#F5F6F8;--card:#FFFFFF;--ink:#1B2430;--muted:#5B6675;--line:#DDE1E7;
+  --ok:#1E7B4F;--err:#B42318;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
+header{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
+.hwrap{max-width:860px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.logo{width:38px;height:38px;border-radius:8px;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.htitle{font-weight:600;font-size:15px;line-height:1.2}
+.hsub{font-size:12px;opacity:.8}
+main{max-width:860px;margin:0 auto;padding:20px 16px 120px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;margin-bottom:16px}
+h1{font-size:22px;margin:0 0 8px;color:var(--navy)}
+h2{font-size:18px;margin:0 0 6px;color:var(--navy)}
+.muted{color:var(--muted);font-size:14px}
+label.f{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
+input[type=text],select{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+input[type=text]:focus,select:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.btn{appearance:none;border:0;border-radius:8px;padding:12px 20px;font:600 15px Inter,sans-serif;cursor:pointer;background:var(--navy);color:#fff}
+.btn:hover{background:var(--navy2)}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.ghost{background:transparent;color:var(--navy);border:1px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+.notice{background:var(--gold-soft);border-left:4px solid var(--gold);padding:12px 14px;border-radius:6px;font-size:14px;margin:12px 0}
+.err{color:var(--err);font-size:14px;margin-top:10px;min-height:1em}
+ul.inst{padding-left:20px;margin:8px 0}
+ul.inst li{margin:4px 0;font-size:15px}
+.progress{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 8px}
+.bar{height:8px;background:#E4E7EC;border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--gold);width:0;transition:width .25s}
+.ptext{font-size:12px;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between}
+.intro{font-weight:600;color:var(--navy2);background:#EEF2F8;padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:15px}
+.q{border-top:1px solid var(--line);padding:14px 0}
+.q:first-of-type{border-top:0}
+.qt{font-size:15.5px;margin-bottom:10px}
+.qt b{color:var(--navy);margin-right:6px}
+.opts{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.opts.yn{grid-template-columns:repeat(2,minmax(0,140px))}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0}
+.opt span{display:flex;align-items:center;justify-content:center;text-align:center;min-height:44px;padding:6px 4px;border:1px solid var(--line);border-radius:8px;font-size:13px;cursor:pointer;background:#fff;user-select:none}
+.opt input:checked+span{background:var(--navy);color:#fff;border-color:var(--navy)}
+.opt input:focus-visible+span{outline:2px solid var(--gold)}
+.q.missing .qt{color:var(--err)}
+.nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 16px;z-index:10}
+.nav .inner{max-width:860px;margin:0 auto;display:flex;justify-content:space-between;gap:10px}
+.hidden{display:none!important}
+.folio{font:700 20px ui-monospace,Menlo,monospace;color:var(--navy);background:var(--gold-soft);padding:10px 14px;border-radius:8px;display:inline-block;margin:10px 0}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:15px}
+.check input{width:20px;height:20px;margin-top:2px;flex:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+@media (max-width:640px){
+  .opts{grid-template-columns:1fr}
+  .opt span{justify-content:flex-start;padding:10px 12px;font-size:14px}
+  .grid2{grid-template-columns:1fr}
+  .card{padding:16px}
+}
+</style>
+</head>
+<body>
+<header><div class="hwrap"><div class="logo">035</div><div><div class="htitle" id="hOrg">Evaluación de factores de riesgo psicosocial</div><div class="hsub" id="hCentro">NOM-035-STPS-2018</div></div></div></header>
+
+<main>
+  <!-- Paso 0: código -->
+  <section id="sCodigo" class="card">
+    <h1>Bienvenida(o)</h1>
+    <p class="muted">Ingrese el código de acceso de su centro de trabajo que le proporcionó Capital Humano.</p>
+    <label class="f" for="inCodigo">Código de acceso</label>
+    <input type="text" id="inCodigo" maxlength="10" autocomplete="off" style="text-transform:uppercase;letter-spacing:.15em;font-weight:600">
+    <div class="err" id="errCodigo"></div>
+    <div style="margin-top:14px"><button class="btn" id="btnCodigo">Continuar</button></div>
+  </section>
+
+  <!-- Paso 1: instrucciones (Guía II.2 / III.2) -->
+  <section id="sInstr" class="card hidden">
+    <h1>Antes de comenzar</h1>
+    <p id="txtCentro" class="muted"></p>
+    <h2 style="margin-top:14px">Objetivo de la evaluación</h2>
+    <p id="txtObjetivo">Identificar y analizar los factores de riesgo psicosocial en su centro de trabajo, así como identificar a los trabajadores que fueron sujetos a acontecimientos traumáticos severos, conforme a la NOM-035-STPS-2018, para establecer medidas que mejoren el ambiente de trabajo.</p>
+    <div class="notice" id="txtPrivacidad"></div>
+    <h2>Instrucciones</h2>
+    <ul class="inst">
+      <li>Conteste el cuestionario <b>completamente</b>; el sistema le indicará si falta alguna respuesta.</li>
+      <li><b>No existen respuestas correctas o incorrectas.</b></li>
+      <li>Es necesaria su concentración: busque un lugar tranquilo.</li>
+      <li>Considere las condiciones de <b>los dos últimos meses</b>.</li>
+      <li>Su opinión es lo más importante; le pedimos que conteste con <b>sinceridad</b>.</li>
+      <li>Seleccione una sola opción por pregunta. En algunas secciones se le hará una pregunta previa (Sí / No) que determina si debe responder las preguntas siguientes.</li>
+      <li>Si tiene dudas, puede consultarlas con el aplicador o con Capital Humano.</li>
+    </ul>
+    <p class="muted" id="txtDuracion"></p>
+    <label class="check"><input type="checkbox" id="chkAcepto"> <span>He leído el objetivo, las instrucciones y el aviso de confidencialidad, y acepto participar.</span></label>
+    <div class="grid2">
+      <div><label class="f" for="inNombre">Nombre completo</label><input type="text" id="inNombre" autocomplete="name"></div>
+      <div><label class="f" for="inNum">Número de empleado</label><input type="text" id="inNum" autocomplete="off"></div>
+    </div>
+    <div class="err" id="errInstr"></div>
+    <div style="margin-top:16px"><button class="btn" id="btnIniciar">Iniciar cuestionario</button></div>
+  </section>
+
+  <!-- Pasos del cuestionario -->
+  <section id="sCuest" class="hidden">
+    <div class="progress"><div class="bar"><i id="barFill"></i></div><div class="ptext"><span id="pLabel"></span><span id="pCount"></span></div></div>
+    <div class="card" id="pagina"></div>
+  </section>
+
+  <!-- Final -->
+  <section id="sFin" class="card hidden">
+    <h1>¡Gracias por su participación!</h1>
+    <p>Su cuestionario se registró correctamente. Su folio de registro es:</p>
+    <div class="folio" id="txtFolio"></div>
+    <p class="muted">Conserve este folio. La información que proporcionó es confidencial y se utilizará exclusivamente para fines de mejora del ambiente de trabajo. Los resultados generales de su centro de trabajo estarán disponibles para su consulta.</p>
+    <div class="notice hidden" id="finGI">Por sus respuestas en la sección de acontecimientos traumáticos severos, el área de Capital Humano podrá contactarle de manera confidencial para ofrecerle una valoración y orientación por parte del personal médico o psicológico. Si lo necesita antes, puede acercarse directamente al servicio médico de su centro de trabajo.</div>
+  </section>
+</main>
+
+<nav class="nav hidden" id="nav"><div class="inner"><button class="btn ghost" id="btnAtras">Atrás</button><button class="btn" id="btnSig">Siguiente</button></div></nav>
+
+<script src="config.js"></script>
+<script src="instrumentos.js"></script>
+<script>
+(function(){
+'use strict';
+const qs=new URLSearchParams(location.search);
+const API=(qs.get('api')||(window.NOM035_CONFIG&&window.NOM035_CONFIG.API_URL)||'').trim();
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const S={codigo:'',info:null,guia:null,paginas:[],idx:0,nombre:'',num:'',gi:{},resp:{},filtros:{},datosV:{}};
+const KEY=()=> 'nom035_borrador_'+S.codigo;
+
+async function api(action,payload){
+  if(!API) throw new Error('La plataforma no está configurada (falta la URL del servidor en config.js).');
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({action},payload||{}))});
+  const j=await r.json();
+  if(!j.ok) throw new Error(j.error||'Error del servidor');
+  return j.data;
+}
+
+function guardarBorrador(){try{localStorage.setItem(KEY(),JSON.stringify({gi:S.gi,resp:S.resp,filtros:S.filtros,datosV:S.datosV,idx:S.idx,nombre:S.nombre,num:S.num}))}catch(e){}}
+function leerBorrador(){try{return JSON.parse(localStorage.getItem(KEY())||'null')}catch(e){return null}}
+function borrarBorrador(){try{localStorage.removeItem(KEY())}catch(e){}}
+
+/* ---------- Paso 0 ---------- */
+if(qs.get('c')) $('inCodigo').value=qs.get('c').toUpperCase();
+$('btnCodigo').onclick=async()=>{
+  const c=$('inCodigo').value.trim().toUpperCase();
+  $('errCodigo').textContent='';
+  if(!c){$('errCodigo').textContent='Escriba el código.';return;}
+  $('btnCodigo').disabled=true;$('btnCodigo').textContent='Verificando…';
+  try{
+    const d=await api('centro',{codigo:c});
+    S.codigo=c;S.info=d;S.guia=d.guia;
+    $('hOrg').textContent=d.organizacion||'Evaluación NOM-035';
+    $('hCentro').textContent=d.centro.razonSocial+' · '+d.centro.centro;
+    $('txtCentro').textContent='Centro de trabajo: '+d.centro.razonSocial+' — '+d.centro.centro+' · Periodo '+d.centro.periodo;
+    $('txtPrivacidad').textContent=d.avisoPrivacidad||'La información que proporcione es confidencial y se utilizará exclusivamente para fines de mejora del ambiente de trabajo.';
+    const min={I:'5',II:'15 a 20',III:'20 a 30'}[S.guia];
+    $('txtDuracion').textContent='Tiempo estimado: '+min+' minutos.';
+    const b=leerBorrador();
+    if(b){Object.assign(S,{gi:b.gi||{},resp:b.resp||{},filtros:b.filtros||{},datosV:b.datosV||{}});$('inNombre').value=b.nombre||'';$('inNum').value=b.num||'';S._resume=b.idx||0;}
+    $('sCodigo').classList.add('hidden');$('sInstr').classList.remove('hidden');
+  }catch(e){$('errCodigo').textContent=e.message;}
+  finally{$('btnCodigo').disabled=false;$('btnCodigo').textContent='Continuar';}
+};
+$('inCodigo').addEventListener('keydown',e=>{if(e.key==='Enter')$('btnCodigo').click();});
+
+/* ---------- Paso 1 ---------- */
+$('btnIniciar').onclick=()=>{
+  $('errInstr').textContent='';
+  if(!$('chkAcepto').checked){$('errInstr').textContent='Debe aceptar para continuar.';return;}
+  S.nombre=$('inNombre').value.trim();S.num=$('inNum').value.trim();
+  if(!S.nombre||!S.num){$('errInstr').textContent='Escriba su nombre y número de empleado.';return;}
+  construirPaginas();
+  S.idx=Math.min(S._resume||0,S.paginas.length-1);
+  $('sInstr').classList.add('hidden');$('sCuest').classList.remove('hidden');$('nav').classList.remove('hidden');
+  render();
+};
+
+/* ---------- Construcción de páginas ----------
+ * Orden (Guía II.2 a) 6 / III.2 a) 7): primero cuestionario(s), al final ficha de datos del trabajador (Guía V).
+ * La Guía I (5.5) se aplica a todos los centros. */
+function construirPaginas(){
+  const P=[];
+  P.push({tipo:'giI'});
+  P.push({tipo:'giRest',cond:()=>giEvento()});
+  if(S.guia==='II'||S.guia==='III'){
+    const G=S.guia==='II'?GUIA_II:GUIA_III;
+    G.bloques.forEach((b,i)=>P.push({tipo:'bloque',G,b,i}));
+    P.push({tipo:'datosV'});
+  }else{
+    P.push({tipo:'datosMin'});
+  }
+  P.push({tipo:'revisar'});
+  S.paginas=P;
+}
+function giEvento(){for(let i=1;i<=6;i++) if(S.gi[i]===true) return true;return false;}
+function visibles(){return S.paginas.filter(p=>!p.cond||p.cond());}
+
+function etiquetaSeccion(p){
+  if(p.tipo==='giI'||p.tipo==='giRest') return 'Acontecimientos traumáticos severos';
+  if(p.tipo==='bloque') return 'Factores de riesgo psicosocial'+(S.guia==='III'?' y entorno organizacional':'');
+  if(p.tipo==='datosV'||p.tipo==='datosMin') return 'Datos del trabajador';
+  return 'Revisión y envío';
+}
+
+function render(){
+  const V=visibles();
+  if(S.idx>=V.length) S.idx=V.length-1;
+  const p=V[S.idx];
+  const pct=Math.round(S.idx/(V.length-1)*100);
+  $('barFill').style.width=pct+'%';
+  $('pLabel').textContent=etiquetaSeccion(p);
+  $('pCount').textContent='Paso '+(S.idx+1)+' de '+V.length;
+  const el=$('pagina');
+  el.innerHTML=htmlPagina(p);
+  enlazar(p);
+  $('btnAtras').style.visibility=S.idx===0?'hidden':'visible';
+  $('btnSig').textContent=p.tipo==='revisar'?'Enviar cuestionario':'Siguiente';
+  $('btnSig').className='btn'+(p.tipo==='revisar'?' gold':'');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function radioYN(name,val){
+  return '<div class="opts yn">'+['Sí','No'].map((t,i)=>{const v=i===0;return '<label class="opt"><input type="radio" name="'+name+'" value="'+v+'"'+(val===v?' checked':'')+'><span>'+t+'</span></label>';}).join('')+'</div>';
+}
+function radioLik(n,val){
+  return '<div class="opts">'+ESCALA.map((t,i)=>'<label class="opt"><input type="radio" name="r'+n+'" value="'+i+'"'+(Number(val)===i&&val!==undefined&&val!==''?' checked':'')+'><span>'+t+'</span></label>').join('')+'</div>';
+}
+
+function htmlPagina(p){
+  if(p.tipo==='giI'){
+    const s=GUIA_I.secciones[0];
+    return '<h2>'+esc(GUIA_I.titulo)+'</h2><p class="muted">Marque la respuesta que corresponda.</p><div class="intro">'+esc(s.titulo)+'</div><p><b>'+esc(s.pregunta)+'</b></p>'+
+      s.items.map(([n,t])=>'<div class="q" data-n="gi'+n+'"><div class="qt">'+esc(t)+'</div>'+radioYN('gi'+n,S.gi[n])+'</div>').join('');
+  }
+  if(p.tipo==='giRest'){
+    return '<h2>'+esc(GUIA_I.titulo)+'</h2>'+GUIA_I.secciones.slice(1).map(s=>'<div class="intro" style="margin-top:14px">'+esc(s.titulo)+'</div>'+
+      s.items.map(([n,t])=>'<div class="q" data-n="gi'+n+'"><div class="qt">'+esc(t)+'</div>'+radioYN('gi'+n,S.gi[n])+'</div>').join('')).join('');
+  }
+  if(p.tipo==='bloque'){
+    const b=p.b,G=p.G;let h='<h2>'+esc(G.titulo)+'</h2>';
+    if(b.filtro){
+      if(b.introFiltro) h+='<div class="intro">'+esc(b.introFiltro)+'</div>';
+      h+='<div class="q" data-n="f_'+b.filtro+'"><div class="qt"><b>'+esc(b.preguntaFiltro)+'</b></div>'+radioYN('f_'+b.filtro,S.filtros[b.filtro])+'</div>';
+      h+='<p class="muted">'+esc(b.notaFiltro)+'</p>';
+      h+='<div id="filtroItems" class="'+(S.filtros[b.filtro]===true?'':'hidden')+'">';
+      if(b.intro) h+='<div class="intro">'+esc(b.intro)+'</div>';
+      h+=b.items.map(n=>'<div class="q" data-n="'+n+'"><div class="qt"><b>'+n+'</b>'+esc(G.items[n])+'</div>'+radioLik(n,S.resp[n])+'</div>').join('');
+      h+='</div>';
+      return h;
+    }
+    h+='<div class="intro">'+esc(b.intro)+'</div>';
+    h+=b.items.map(n=>'<div class="q" data-n="'+n+'"><div class="qt"><b>'+n+'</b>'+esc(G.items[n])+'</div>'+radioLik(n,S.resp[n])+'</div>').join('');
+    return h;
+  }
+  if(p.tipo==='datosV'||p.tipo==='datosMin'){
+    const campos=p.tipo==='datosMin'?GUIA_V.campos.filter(c=>['sexo','puesto','area'].includes(c.id)):GUIA_V.campos;
+    let h='<h2>Datos del trabajador</h2><p class="muted">Esta información es confidencial y se utiliza sólo para el análisis estadístico de los resultados.</p><div class="grid2">';
+    campos.forEach(c=>{
+      const v=S.datosV[c.id]||'';
+      const oculto=c.dependeDe&&(!S.datosV[c.dependeDe]||S.datosV[c.dependeDe]===c.ocultarSi);
+      h+='<div data-campo="'+c.id+'" class="'+(oculto?'hidden':'')+'"><label class="f" for="v_'+c.id+'">'+esc(c.label)+'</label>';
+      if(c.tipo==='texto') h+='<input type="text" id="v_'+c.id+'" value="'+esc(v)+'">';
+      else h+='<select id="v_'+c.id+'"><option value="">Seleccione…</option>'+c.opciones.map(o=>'<option'+(o===v?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select>';
+      h+='</div>';
+    });
+    return h+'</div>';
+  }
+  if(p.tipo==='revisar'){
+    return '<h2>Revisión final</h2><p>Ha respondido todas las secciones. Antes de enviar, puede regresar con el botón <b>Atrás</b> para revisar o cambiar sus respuestas.</p>'+
+      '<div class="notice">Al enviar, sus respuestas quedarán registradas y no podrán modificarse. Sólo es posible responder una vez por periodo de evaluación.</div>'+
+      '<p class="muted">Nombre: <b>'+esc(S.nombre)+'</b> · No. empleado: <b>'+esc(S.num)+'</b></p><div class="err" id="errEnvio"></div>';
+  }
+  return '';
+}
+
+function enlazar(p){
+  const el=$('pagina');
+  el.querySelectorAll('input[type=radio]').forEach(r=>r.addEventListener('change',()=>{
+    const name=r.name,val=r.value;
+    if(name.startsWith('gi')) S.gi[+name.slice(2)]=(val==='true');
+    else if(name.startsWith('f_')){
+      const f=name.slice(2);S.filtros[f]=(val==='true');
+      const box=$('filtroItems');if(box) box.classList.toggle('hidden',!S.filtros[f]);
+      if(!S.filtros[f]) p.b.items.forEach(n=>delete S.resp[n]);
+    }
+    else if(name.startsWith('r')) S.resp[+name.slice(1)]=Number(val);
+    const q=r.closest('.q');if(q) q.classList.remove('missing');
+    guardarBorrador();
+  }));
+  el.querySelectorAll('select,input[type=text]').forEach(inp=>inp.addEventListener('input',()=>{
+    const id=inp.id.replace('v_','');S.datosV[id]=inp.value;
+    GUIA_V.campos.filter(c=>c.dependeDe===id).forEach(c=>{
+      const box=el.querySelector('[data-campo="'+c.id+'"]');if(!box) return;
+      const oc=!inp.value||inp.value===c.ocultarSi;box.classList.toggle('hidden',oc);if(oc) delete S.datosV[c.id];
+    });
+    guardarBorrador();
+  }));
+}
+
+function validar(p){
+  const falt=[];
+  if(p.tipo==='giI') for(let i=1;i<=6;i++) if(S.gi[i]===undefined) falt.push('gi'+i);
+  if(p.tipo==='giRest') for(let i=7;i<=20;i++) if(S.gi[i]===undefined) falt.push('gi'+i);
+  if(p.tipo==='bloque'){
+    const b=p.b;
+    if(b.filtro){
+      if(S.filtros[b.filtro]===undefined) falt.push('f_'+b.filtro);
+      else if(S.filtros[b.filtro]) b.items.forEach(n=>{if(S.resp[n]===undefined) falt.push(String(n));});
+    }else b.items.forEach(n=>{if(S.resp[n]===undefined) falt.push(String(n));});
+  }
+  if(p.tipo==='datosV'||p.tipo==='datosMin'){
+    const campos=p.tipo==='datosMin'?GUIA_V.campos.filter(c=>['sexo','puesto','area'].includes(c.id)):GUIA_V.campos;
+    const bad=campos.filter(c=>{
+      if(c.dependeDe&&(!S.datosV[c.dependeDe]||S.datosV[c.dependeDe]===c.ocultarSi)) return false;
+      return !String(S.datosV[c.id]||'').trim();
+    });
+    if(bad.length){alert('Complete: '+bad.map(c=>c.label).join(', '));return false;}
+    return true;
+  }
+  $('pagina').querySelectorAll('.q').forEach(q=>q.classList.toggle('missing',falt.includes(q.dataset.n)));
+  if(falt.length){
+    const first=$('pagina').querySelector('.q.missing');if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+    return false;
+  }
+  return true;
+}
+
+$('btnAtras').onclick=()=>{if(S.idx>0){S.idx--;guardarBorrador();render();}};
+$('btnSig').onclick=async()=>{
+  const V=visibles();const p=V[S.idx];
+  if(!validar(p)) return;
+  if(p.tipo==='giI'&&!giEvento()) for(let i=7;i<=20;i++) delete S.gi[i];
+  if(p.tipo!=='revisar'){S.idx++;guardarBorrador();render();return;}
+  // Enviar
+  const btn=$('btnSig');btn.disabled=true;btn.textContent='Enviando…';
+  try{
+    const gi={};for(let i=1;i<=20;i++) gi[i]=S.gi[i]===undefined?false:S.gi[i];
+    const filtros={clientes:!!S.filtros.clientes,jefe:!!S.filtros.jefe};
+    const d=await api('enviar',{codigo:S.codigo,nombre:S.nombre,numEmpleado:S.num,gi,respuestas:S.resp,filtros,datosV:S.datosV});
+    borrarBorrador();
+    $('txtFolio').textContent=d.folio;
+    const r=evaluarGuiaI(gi);$('finGI').classList.toggle('hidden',!r.requiereValoracion);
+    $('sCuest').classList.add('hidden');$('nav').classList.add('hidden');$('sFin').classList.remove('hidden');
+    window.scrollTo(0,0);
+  }catch(e){
+    const er=$('errEnvio');if(er) er.textContent=e.message;else alert(e.message);
+    btn.disabled=false;btn.textContent='Enviar cuestionario';
+  }
+};
+})();
+</script>
+</body>
+</html>
