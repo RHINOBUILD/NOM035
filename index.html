@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel NOM-035</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --navy:#0B2545;--navy2:#13315C;--gold:#C9A227;--gold-soft:#F4EBCB;
+  --bg:#F3F4F7;--card:#fff;--ink:#1B2430;--muted:#5B6675;--line:#DDE1E7;--err:#B42318;
+  --n0:#7FC8DC;--n1:#6BBF59;--n2:#F2C94C;--n3:#F2994A;--n4:#E5484D;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+header{background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
+.hw{max-width:1280px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{width:36px;height:36px;border-radius:8px;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:700;font-size:12px}
+.ht{font-weight:600;font-size:15px}.hs{font-size:12px;opacity:.8}
+.tabs{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+.tabs button{background:transparent;border:0;color:#fff;opacity:.75;padding:8px 12px;border-radius:6px;font:500 14px Inter,sans-serif;cursor:pointer}
+.tabs button.on{opacity:1;background:rgba(255,255,255,.12);box-shadow:inset 0 -2px 0 var(--gold)}
+main{max-width:1280px;margin:0 auto;padding:18px 16px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+h1{font-size:20px;margin:0 0 4px;color:var(--navy)}h2{font-size:16px;margin:0 0 10px;color:var(--navy)}h3{font-size:14px;margin:14px 0 8px;color:var(--navy2)}
+.muted{color:var(--muted)}.small{font-size:12px}
+.btn{appearance:none;border:0;border-radius:8px;padding:9px 14px;font:600 13px Inter,sans-serif;cursor:pointer;background:var(--navy);color:#fff;white-space:nowrap}
+.btn:hover{background:var(--navy2)}.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}.btn.ghost:hover{border-color:var(--navy)}
+.btn.danger{background:#fff;color:var(--err);border:1px solid #F1C0BC}
+.btn.sm{padding:6px 10px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.sp{flex:1}
+input,select,textarea{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;width:100%}
+textarea{min-height:80px;resize:vertical}
+label.f{display:block;font-weight:600;font-size:12.5px;margin:10px 0 4px;color:var(--navy2)}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#F7F8FA;font-weight:600;color:var(--navy2);white-space:nowrap;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+.kpi .l{font-size:12px;color:var(--muted)}.kpi .v{font-size:24px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;white-space:nowrap;color:#1B2430}
+.lv0{background:var(--n0)}.lv1{background:var(--n1)}.lv2{background:var(--n2)}.lv3{background:var(--n3)}.lv4{background:var(--n4);color:#fff}
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;background:#EEF2F8;color:var(--navy2)}
+.tag.g{background:var(--gold-soft);color:#6B5410}
+.stack{display:flex;height:14px;border-radius:99px;overflow:hidden;background:#EEF0F3;min-width:140px}
+.stack i{display:block;height:100%}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;background:var(--c)}
+.prog{height:8px;background:#EEF0F3;border-radius:99px;overflow:hidden}.prog i{display:block;height:100%;background:var(--gold)}
+.hidden{display:none!important}
+.center{max-width:420px;margin:60px auto}
+.err{color:var(--err);font-size:13px;min-height:1em;margin-top:8px}
+.notice{background:var(--gold-soft);border-left:4px solid var(--gold);padding:10px 12px;border-radius:6px;margin:10px 0}
+.code{font:600 14px ui-monospace,Menlo,monospace;letter-spacing:.1em;background:#EEF2F8;padding:2px 8px;border-radius:6px}
+dialog{border:0;border-radius:14px;padding:0;width:min(760px,94vw);box-shadow:0 20px 60px rgba(11,37,69,.3)}
+dialog::backdrop{background:rgba(11,37,69,.45)}
+.dh{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center}
+.db{padding:6px 18px 16px;max-height:70vh;overflow:auto}
+.df{padding:12px 18px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end}
+.xbtn{margin-left:auto;background:none;border:0;font-size:22px;cursor:pointer;color:var(--muted)}
+.dl{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.dlc{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;background:#fff}
+.dlc b{color:var(--navy)}.dlc p{margin:0;font-size:12.5px;color:var(--muted);flex:1}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;z-index:99;font-size:13px}
+.demo-banner{background:#FFF4E5;color:#7A4A00;text-align:center;padding:6px;font-size:12.5px;font-weight:600}
+</style>
+</head>
+<body>
+<div id="demoBanner" class="demo-banner hidden">MODO DEMOSTRACIÓN — datos ficticios generados en su navegador; nada se guarda en el servidor.</div>
+<header><div class="hw">
+  <div class="logo">035</div>
+  <div><div class="ht">Panel NOM-035-STPS-2018</div><div class="hs" id="hOrg">Capital Humano</div></div>
+  <nav class="tabs hidden" id="tabs">
+    <button data-v="centros" class="on">Centros de trabajo</button>
+    <button data-v="config">Configuración</button>
+    <button id="btnSalir">Salir</button>
+  </nav>
+</div></header>
+
+<main>
+  <!-- LOGIN -->
+  <section id="vLogin" class="center card">
+    <h1>Acceso Capital Humano</h1>
+    <p class="muted">Panel de control para aplicar la NOM-035 y descargar resultados.</p>
+    <label class="f" for="inPass">Contraseña</label>
+    <input type="password" id="inPass" autocomplete="current-password">
+    <div class="err" id="errLogin"></div>
+    <div class="row" style="margin-top:12px"><button class="btn" id="btnLogin">Entrar</button><span class="sp"></span><button class="btn ghost" id="btnDemo">Ver demostración</button></div>
+  </section>
+
+  <!-- CENTROS -->
+  <section id="vCentros" class="hidden">
+    <div class="row" style="margin-bottom:12px">
+      <div><h1>Centros de trabajo</h1><div class="muted">Cada razón social / centro de trabajo recibe automáticamente el cuestionario que le corresponde según su número de trabajadores (numeral 2 y 7.1).</div></div>
+      <span class="sp"></span><button class="btn gold" id="btnNuevo">+ Nuevo centro</button>
+    </div>
+    <div class="card" style="padding:12px 14px">
+      <div class="grid g3 small">
+        <div><span class="tag">Hasta 15</span> Guía I (acontecimientos traumáticos severos) + política, medidas y difusión.</div>
+        <div><span class="tag">16 a 50</span> Guía I + <b>Guía II</b> (46 reactivos) a <b>todos</b> los trabajadores.</div>
+        <div><span class="tag">Más de 50</span> Guía I + <b>Guía III</b> (72 reactivos) a todos o a la muestra representativa (III.1).</div>
+      </div>
+    </div>
+    <div class="tw card" style="padding:0"><table id="tblCentros"></table></div>
+  </section>
+
+  <!-- RESULTADOS -->
+  <section id="vRes" class="hidden"></section>
+
+  <!-- CONFIG -->
+  <section id="vConfig" class="hidden">
+    <h1>Configuración</h1>
+    <div class="card">
+      <h2>Datos para el informe de resultados (numeral 7.7)</h2>
+      <div class="grid g2">
+        <div><label class="f">Organización / grupo</label><input id="cfOrg"></div>
+        <div><label class="f">Puesto del responsable</label><input id="cfPuesto"></div>
+        <div><label class="f">Nombre completo del responsable de la evaluación (7.7 h 1)</label><input id="cfResp"></div>
+        <div><label class="f">Número de cédula profesional (7.7 h 2)</label><input id="cfCed"></div>
+      </div>
+      <label class="f">Objetivo (7.7 b)</label><textarea id="cfObj"></textarea>
+      <label class="f">Aviso de confidencialidad que ve el trabajador</label><textarea id="cfAviso"></textarea>
+      <div class="row" style="margin-top:12px"><button class="btn" id="btnCfg">Guardar configuración</button></div>
+    </div>
+    <div class="card">
+      <h2>Cambiar contraseña del panel</h2>
+      <div class="grid g3">
+        <div><label class="f">Actual</label><input type="password" id="pwA"></div>
+        <div><label class="f">Nueva (mín. 8)</label><input type="password" id="pwN"></div>
+        <div style="align-self:end"><button class="btn" id="btnPw">Cambiar</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Modal centro -->
+<dialog id="dlgCentro"><form method="dialog" id="frmCentro">
+  <div class="dh"><h2 id="dlgTitle" style="margin:0">Centro de trabajo</h2><button class="xbtn" value="cancel" formnovalidate aria-label="Cerrar">×</button></div>
+  <div class="db">
+    <div class="grid g2">
+      <div><label class="f">Razón social *</label><input name="razonSocial" required></div>
+      <div><label class="f">RFC</label><input name="rfc"></div>
+      <div><label class="f">Centro de trabajo / sede *</label><input name="centro" required placeholder="Ej. Hospital San José del Cabo"></div>
+      <div><label class="f">Periodo de evaluación *</label><input name="periodo" required placeholder="Ej. 2026"></div>
+    </div>
+    <label class="f">Domicilio (7.7 a 2)</label><input name="domicilio">
+    <label class="f">Actividad principal (7.7 a 3)</label><input name="actividadPrincipal" placeholder="Ej. Servicios hospitalarios">
+    <label class="f">Principales actividades realizadas en el centro de trabajo (7.7 c)</label><textarea name="principalesActividades"></textarea>
+    <div class="grid g3">
+      <div><label class="f">Total de trabajadores *</label><input name="trabajadores" type="number" min="1" required></div>
+      <div><label class="f">Hombres</label><input name="hombres" type="number" min="0"></div>
+      <div><label class="f">Mujeres</label><input name="mujeres" type="number" min="0"></div>
+      <div><label class="f">Inicio de aplicación</label><input name="fechaInicio" type="date"></div>
+      <div><label class="f">Cierre de aplicación</label><input name="fechaCierre" type="date"></div>
+      <div><label class="f">Estado</label><select name="activo"><option value="true">Activo (recibe respuestas)</option><option value="false">Inactivo</option></select></div>
+    </div>
+    <div class="notice" id="cGuia"></div>
+    <div class="err" id="errCentro"></div>
+  </div>
+  <div class="df"><button class="btn ghost" value="cancel" formnovalidate>Cancelar</button><button class="btn" id="btnGuardarCentro" value="default">Guardar</button></div>
+</form></dialog>
+
+<!-- Modal compartir -->
+<dialog id="dlgShare"><div>
+  <div class="dh"><h2 style="margin:0">Enlace para trabajadores</h2><button class="xbtn" onclick="this.closest('dialog').close()" aria-label="Cerrar">×</button></div>
+  <div class="db">
+    <p class="muted" id="shareTxt"></p>
+    <div class="row"><input id="shareUrl" readonly><button class="btn sm" id="btnCopy">Copiar</button></div>
+    <div id="qr" style="margin:16px auto;width:220px"></div>
+    <div class="row" style="justify-content:center"><button class="btn ghost sm" id="btnCartel">Imprimir cartel con QR</button></div>
+  </div>
+</div></dialog>
+
+<!-- Modal muestra -->
+<dialog id="dlgMuestra"><div>
+  <div class="dh"><h2 style="margin:0">Selección aleatoria de la muestra (Guía III, numeral III.1)</h2><button class="xbtn" onclick="this.closest('dialog').close()" aria-label="Cerrar">×</button></div>
+  <div class="db">
+    <p class="small muted">Pegue la plantilla del centro (una persona por renglón): <b>número de empleado, nombre, sexo (H/M), área</b>. Puede copiarla desde Excel. La muestra se calcula con la Ecuación 1 y se distribuye entre hombres y mujeres según el porcentaje de cada sexo; la selección es aleatoria sin importar turno, puesto o área.</p>
+    <textarea id="mLista" style="min-height:180px" placeholder="1023	Ana López	M	Enfermería&#10;1024	Juan Pérez	H	Urgencias"></textarea>
+    <div class="row" style="margin-top:10px"><button class="btn" id="btnSortear">Seleccionar muestra</button><span class="muted small" id="mInfo"></span></div>
+    <div id="mRes" style="margin-top:12px"></div>
+  </div>
+</div></dialog>
+
+<!-- Modal eliminar -->
+<dialog id="dlgDel"><form method="dialog">
+  <div class="dh"><h2 style="margin:0">Eliminar evaluación</h2></div>
+  <div class="db"><p>Esta acción elimina el registro <b id="delFolio"></b>. Queda asentada en la bitácora. Indique el motivo (p. ej. duplicado, captura de prueba):</p><input id="delMotivo"></div>
+  <div class="df"><button class="btn ghost" value="cancel">Cancelar</button><button class="btn danger" value="ok">Eliminar</button></div>
+</form></dialog>
+
+<script src="config.js"></script>
+<script src="instrumentos.js"></script>
+<script>
+(function(){
+'use strict';
+const CFG=window.NOM035_CONFIG||{};
+const qs=new URLSearchParams(location.search);
+const API=(qs.get('api')||CFG.API_URL||'').trim();
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LV=n=>NIVELES.indexOf(n);
+const pill=n=>n?'<span class="pill lv'+LV(n)+'">'+esc(n)+'</span>':'—';
+const fmt=(x,d=1)=>x==null||isNaN(x)?'—':Number(x).toLocaleString('es-MX',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fdate=s=>{if(!s)return'';const d=new Date(s);return isNaN(d)?String(s):d.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});};
+const toast=m=>{const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2600);};
+const COLORS=['var(--n0)','var(--n1)','var(--n2)','var(--n3)','var(--n4)'];
+const HEX=['#7FC8DC','#6BBF59','#F2C94C','#F2994A','#E5484D'];
+
+let S={token:null,demo:false,centros:[],config:{},res:null,area:''};
+try{S.token=sessionStorage.getItem('nom035_tok');}catch(e){}
+
+/* ===================== API (servidor o demo) ===================== */
+async function api(action,payload){
+  if(S.demo) return DEMO.call(action,payload||{});
+  if(!API) throw new Error('Falta la URL del servidor en config.js (API_URL). Puede usar "Ver demostración" mientras tanto.');
+  const r=await fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({action,token:S.token},payload||{}))});
+  const j=await r.json();
+  if(!j.ok){ if(j.error==='SESION_EXPIRADA'){salir();throw new Error('La sesión expiró; vuelva a entrar.');} throw new Error(j.error||'Error'); }
+  return j.data;
+}
+
+/* ===================== Login ===================== */
+$('btnLogin').onclick=async()=>{
+  $('errLogin').textContent='';
+  try{const d=await api('login',{password:$('inPass').value});S.token=d.token;try{sessionStorage.setItem('nom035_tok',d.token)}catch(e){}entrar();}
+  catch(e){$('errLogin').textContent=e.message;}
+};
+$('inPass').addEventListener('keydown',e=>{if(e.key==='Enter')$('btnLogin').click();});
+$('btnDemo').onclick=()=>{S.demo=true;DEMO.init();$('demoBanner').classList.remove('hidden');entrar();};
+function salir(){S.token=null;try{sessionStorage.removeItem('nom035_tok')}catch(e){}location.reload();}
+$('btnSalir').onclick=salir;
+
+async function entrar(){
+  $('vLogin').classList.add('hidden');$('tabs').classList.remove('hidden');
+  try{S.config=await api('config');$('hOrg').textContent=S.config.organizacion||'Capital Humano';}catch(e){}
+  vista('centros');
+}
+document.querySelectorAll('#tabs button[data-v]').forEach(b=>b.onclick=()=>vista(b.dataset.v));
+function vista(v){
+  document.querySelectorAll('#tabs button[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v||(v==='res'&&b.dataset.v==='centros')));
+  ['vCentros','vRes','vConfig'].forEach(id=>$(id).classList.add('hidden'));
+  if(v==='centros'){$('vCentros').classList.remove('hidden');cargarCentros();}
+  if(v==='config'){$('vConfig').classList.remove('hidden');pintarConfig();}
+  if(v==='res'){$('vRes').classList.remove('hidden');}
+  window.scrollTo(0,0);
+}
+
+/* ===================== Centros ===================== */
+async function cargarCentros(){
+  $('tblCentros').innerHTML='<tr><td class="muted">Cargando…</td></tr>';
+  try{S.centros=await api('centros');}catch(e){$('tblCentros').innerHTML='<tr><td class="err">'+esc(e.message)+'</td></tr>';return;}
+  if(!S.centros.length){$('tblCentros').innerHTML='<tr><td style="padding:24px" class="muted">Aún no hay centros de trabajo. Cree el primero con “+ Nuevo centro”.</td></tr>';return;}
+  let h='<tr><th>Razón social / centro</th><th>Trabajadores</th><th>Cuestionario</th><th>Requeridos</th><th>Avance</th><th>Código</th><th>Estado</th><th></th></tr>';
+  S.centros.forEach(c=>{
+    const req=c.guia==='I'?Number(c.trabajadores):c.muestra;
+    const pct=req?Math.min(100,Math.round(c.respondidos/req*100)):0;
+    const act=String(c.activo)==='true';
+    h+='<tr><td><b>'+esc(c.razonSocial)+'</b><div class="muted small">'+esc(c.centro)+' · Periodo '+esc(c.periodo)+'</div></td>'+
+      '<td class="num">'+esc(c.trabajadores)+'</td>'+
+      '<td><span class="tag'+(c.guia==='III'?' g':'')+'">Guía '+(c.guia==='I'?'I':'I + '+c.guia)+'</span></td>'+
+      '<td class="num">'+req+(c.guia==='III'?'<div class="muted small">muestra mín.</div>':c.guia==='II'?'<div class="muted small">todos</div>':'')+'</td>'+
+      '<td style="min-width:140px"><div class="small">'+c.respondidos+' / '+req+' ('+pct+'%)</div><div class="prog"><i style="width:'+pct+'%"></i></div>'+(c.valoracion?'<div class="small" style="color:var(--err);margin-top:3px">'+c.valoracion+' requieren valoración clínica</div>':'')+'</td>'+
+      '<td><span class="code">'+esc(c.codigo)+'</span></td>'+
+      '<td>'+(act?'<span class="tag" style="background:#E3F4EA;color:#1E7B4F">Activo</span>':'<span class="tag">Inactivo</span>')+'</td>'+
+      '<td><div class="row" style="flex-wrap:nowrap"><button class="btn sm" data-a="res" data-id="'+c.id+'">Resultados</button><button class="btn ghost sm" data-a="share" data-id="'+c.id+'">Enlace/QR</button><button class="btn ghost sm" data-a="edit" data-id="'+c.id+'">Editar</button>'+(c.guia==='III'?'<button class="btn ghost sm" data-a="muestra" data-id="'+c.id+'">Muestra</button>':'')+'<button class="btn danger sm" data-a="del" data-id="'+c.id+'" title="Eliminar">✕</button></div></td></tr>';
+  });
+  $('tblCentros').innerHTML=h;
+  $('tblCentros').querySelectorAll('button[data-a]').forEach(b=>b.onclick=()=>{
+    const c=S.centros.find(x=>String(x.id)===b.dataset.id);
+    ({res:()=>abrirResultados(c.id),share:()=>compartir(c),edit:()=>editarCentro(c),muestra:()=>abrirMuestra(c),del:()=>eliminarCentro(c)})[b.dataset.a]();
+  });
+}
+
+$('btnNuevo').onclick=()=>editarCentro(null);
+const frm=$('frmCentro');
+function actualizarGuiaInfo(){
+  const n=Number(frm.trabajadores.value)||0;
+  if(!n){$('cGuia').innerHTML='Capture el total de trabajadores para determinar el cuestionario aplicable.';return;}
+  const g=guiaPorTamano(n);
+  const txt={I:'<b>Guía de referencia I</b> únicamente. Para centros de hasta 15 trabajadores no se exige la identificación y análisis de factores de riesgo psicosocial (numeral 2 a).',
+    II:'<b>Guía I + Guía II</b> (46 reactivos). Deben responder <b>todos</b> los trabajadores ('+n+') — numeral 7.1 a).',
+    III:'<b>Guía I + Guía III</b> (72 reactivos). Muestra representativa mínima (Ecuación 1, III.1): <b>'+tamanoMuestra(n)+'</b> de '+n+' trabajadores, seleccionados aleatoriamente y distribuidos por sexo — numeral 7.1 b).'}[g];
+  $('cGuia').innerHTML=txt;
+}
+frm.trabajadores.addEventListener('input',actualizarGuiaInfo);
+let editando=null;
+function editarCentro(c){
+  editando=c;frm.reset();$('errCentro').textContent='';
+  $('dlgTitle').textContent=c?'Editar centro de trabajo':'Nuevo centro de trabajo';
+  if(c){['razonSocial','rfc','centro','periodo','domicilio','actividadPrincipal','principalesActividades','trabajadores','hombres','mujeres'].forEach(k=>frm[k].value=c[k]==null?'':c[k]);
+    frm.fechaInicio.value=c.fechaInicio?String(c.fechaInicio).slice(0,10):'';frm.fechaCierre.value=c.fechaCierre?String(c.fechaCierre).slice(0,10):'';frm.activo.value=String(c.activo)==='false'?'false':'true';}
+  else frm.periodo.value=String(new Date().getFullYear());
+  actualizarGuiaInfo();$('dlgCentro').showModal();
+}
+frm.addEventListener('submit',async e=>{
+  if(e.submitter&&e.submitter.value==='cancel') return;
+  e.preventDefault();
+  const o={};['razonSocial','rfc','centro','periodo','domicilio','actividadPrincipal','principalesActividades','fechaInicio','fechaCierre'].forEach(k=>o[k]=frm[k].value.trim());
+  ['trabajadores','hombres','mujeres'].forEach(k=>o[k]=frm[k].value===''?'':Number(frm[k].value));
+  o.activo=frm.activo.value==='true';
+  if(o.hombres!==''&&o.mujeres!==''&&o.hombres+o.mujeres!==o.trabajadores){$('errCentro').textContent='Hombres + mujeres debe sumar el total de trabajadores.';return;}
+  if(editando){o.id=editando.id; if(String(editando.periodo)!==o.periodo&&!confirm('Cambiar el periodo inicia una nueva aplicación. Las respuestas del periodo anterior se conservan y siguen disponibles en Resultados. ¿Continuar?')) return;}
+  $('btnGuardarCentro').disabled=true;
+  try{await api('guardarCentro',{centro:o});$('dlgCentro').close();toast('Centro guardado');cargarCentros();}
+  catch(err){$('errCentro').textContent=err.message;}finally{$('btnGuardarCentro').disabled=false;}
+});
+async function eliminarCentro(c){
+  if(!confirm('¿Eliminar el centro "'+c.razonSocial+' — '+c.centro+'"?')) return;
+  try{await api('eliminarCentro',{id:c.id});toast('Centro eliminado');cargarCentros();}catch(e){alert(e.message);}
+}
+
+/* ---- Compartir ---- */
+function urlEncuesta(c){
+  let base=CFG.ENCUESTA_URL||new URL('encuesta.html',location.href).href;
+  const u=new URL(base,location.href);u.searchParams.set('c',c.codigo);if(qs.get('api')) u.searchParams.set('api',API);return u.href;
+}
+let shareC=null;
+function compartir(c){
+  shareC=c;const url=urlEncuesta(c);
+  $('shareTxt').textContent=c.razonSocial+' — '+c.centro+'. Comparta este enlace o el código '+c.codigo+' con los trabajadores'+(c.guia==='III'?' seleccionados en la muestra.':'.');
+  $('shareUrl').value=url;$('qr').innerHTML='';
+  if(window.QRCode) new QRCode($('qr'),{text:url,width:220,height:220,correctLevel:QRCode.CorrectLevel.M});
+  $('dlgShare').showModal();
+}
+$('btnCopy').onclick=()=>{navigator.clipboard.writeText($('shareUrl').value).then(()=>toast('Enlace copiado'));};
+$('btnCartel').onclick=()=>{
+  const c=shareC;const img=$('qr').querySelector('img,canvas');const src=img?(img.tagName==='CANVAS'?img.toDataURL():img.src):'';
+  const w=window.open('','_blank');
+  w.document.write('<html><head><title>Cartel NOM-035</title><style>body{font-family:Inter,Arial,sans-serif;text-align:center;padding:40px;color:#0B2545}h1{font-size:34px;margin:0 0 6px}.b{border-top:6px solid #C9A227;padding-top:24px}p{font-size:18px}.c{font:700 36px monospace;letter-spacing:.2em;background:#F4EBCB;padding:10px 20px;border-radius:10px;display:inline-block}</style></head><body><div class="b"><p>'+esc(S.config.organizacion||'')+'</p><h1>Evaluación de factores de riesgo psicosocial</h1><p>NOM-035-STPS-2018 · '+esc(c.razonSocial)+' — '+esc(c.centro)+'</p><img src="'+src+'" style="width:320px;height:320px;margin:20px"><p>Escanee el código o entre a:<br><small>'+esc(urlEncuesta(c))+'</small></p><p>Código de acceso</p><div class="c">'+esc(c.codigo)+'</div><p style="font-size:14px;margin-top:30px">Su participación es obligatoria (numeral 6.3) y sus respuestas son confidenciales.</p></div><script>setTimeout(()=>print(),400)<\/script></body></html>');
+  w.document.close();
+};
+
+/* ---- Muestra aleatoria ---- */
+let muestraC=null,muestraSel=[];
+function abrirMuestra(c){muestraC=c;$('mRes').innerHTML='';$('mInfo').textContent='Trabajadores registrados: '+c.trabajadores+' · muestra mínima: '+tamanoMuestra(c.trabajadores);$('dlgMuestra').showModal();}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=crypto.getRandomValues(new Uint32Array(1))[0]%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+$('btnSortear').onclick=()=>{
+  const rows=$('mLista').value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map(l=>{const p=l.split(/\t|;|,/).map(x=>x.trim());return{num:p[0],nombre:p[1]||'',sexo:(p[2]||'').toUpperCase().startsWith('M')||(p[2]||'').toUpperCase().startsWith('F')?'Mujer':'Hombre',area:p[3]||''};});
+  if(rows.length<2){$('mRes').innerHTML='<div class="err">Pegue la lista completa de trabajadores.</div>';return;}
+  const N=rows.length,n=tamanoMuestra(N);
+  const H=rows.filter(r=>r.sexo==='Hombre'),M=rows.filter(r=>r.sexo==='Mujer');
+  let nM=Math.round(n*M.length/N);let nH=n-nM;
+  if(nH>H.length){nH=H.length;nM=n-nH;} if(nM>M.length){nM=M.length;nH=n-nM;}
+  muestraSel=shuffle(H.slice()).slice(0,nH).concat(shuffle(M.slice()).slice(0,nM));
+  const fecha=new Date().toLocaleString('es-MX');
+  $('mRes').innerHTML='<div class="notice">N = '+N+' trabajadores → n = 0.9604·N / (0.0025·(N−1) + 0.9604) = <b>'+n+'</b>. Distribución: '+nH+' hombres ('+H.length+' en plantilla) y '+nM+' mujeres ('+M.length+'). Sorteo: '+fecha+'.'+(N!==Number(muestraC.trabajadores)?'<br><b>Atención:</b> la lista tiene '+N+' personas y el centro está registrado con '+muestraC.trabajadores+'. Actualice el total en “Editar”.':'')+'</div>'+
+    '<div class="row"><button class="btn gold sm" id="btnMx">Descargar lista (Excel)</button><span class="muted small">Conserve la lista como evidencia de la selección aleatoria.</span></div>'+
+    '<div class="tw" style="margin-top:10px;max-height:260px;overflow:auto"><table><tr><th>#</th><th>No.</th><th>Nombre</th><th>Sexo</th><th>Área</th></tr>'+muestraSel.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(r.num)+'</td><td>'+esc(r.nombre)+'</td><td>'+r.sexo+'</td><td>'+esc(r.area)+'</td></tr>').join('')+'</table></div>';
+  $('btnMx').onclick=()=>{
+    const wb=XLSX.utils.book_new();
+    const aoa=[['Selección aleatoria de la muestra — Guía de referencia III, numeral III.1 (NOM-035-STPS-2018)'],['Razón social',muestraC.razonSocial],['Centro de trabajo',muestraC.centro],['Periodo',muestraC.periodo],['Fecha y hora del sorteo',fecha],['N (trabajadores en plantilla)',N],['n (Ecuación 1)',n],['Hombres seleccionados',nH],['Mujeres seleccionadas',nM],[],['#','No. empleado','Nombre','Sexo','Área']].concat(muestraSel.map((r,i)=>[i+1,r.num,r.nombre,r.sexo,r.area]));
+    const ws=XLSX.utils.aoa_to_sheet(aoa);ws['!cols']=[{wch:28},{wch:14},{wch:36},{wch:10},{wch:24}];
+    XLSX.utils.book_append_sheet(wb,ws,'Muestra');XLSX.writeFile(wb,'Muestra_NOM035_'+slug(muestraC.razonSocial+'_'+muestraC.centro)+'_'+muestraC.periodo+'.xlsx');
+  };
+};
+const slug=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_|_$/g,'').slice(0,60);
+
+/* ===================== Configuración ===================== */
+function pintarConfig(){
+  const c=S.config||{};$('cfOrg').value=c.organizacion||'';$('cfPuesto').value=c.responsablePuesto||'';$('cfResp').value=c.responsableNombre||'';$('cfCed').value=c.responsableCedula||'';$('cfObj').value=c.objetivo||'';$('cfAviso').value=c.avisoPrivacidad||'';
+}
+$('btnCfg').onclick=async()=>{
+  try{S.config=await api('guardarConfig',{config:{organizacion:$('cfOrg').value,responsablePuesto:$('cfPuesto').value,responsableNombre:$('cfResp').value,responsableCedula:$('cfCed').value,objetivo:$('cfObj').value,avisoPrivacidad:$('cfAviso').value}});$('hOrg').textContent=S.config.organizacion;toast('Configuración guardada');}catch(e){alert(e.message);}
+};
+$('btnPw').onclick=async()=>{try{await api('cambiarClave',{actual:$('pwA').value,nueva:$('pwN').value});$('pwA').value=$('pwN').value='';toast('Contraseña actualizada');}catch(e){alert(e.message);}};
+
+/* ===================== Resultados ===================== */
+async function abrirResultados(id,periodo){
+  vista('res');$('vRes').innerHTML='<div class="card muted">Cargando resultados…</div>';
+  try{S.res=await api('resultados',{centroId:id,periodo:periodo});S.area='';pintarResultados();}
+  catch(e){$('vRes').innerHTML='<div class="card err">'+esc(e.message)+'</div>';}
+}
+function G(){return S.res.centro.guia==='II'?GUIA_II:S.res.centro.guia==='III'?GUIA_III:null;}
+function respFiltradas(){const r=S.res.respuestas;return S.area?r.filter(x=>(x.datosV&&x.datosV.area||'')===S.area):r;}
+
+/** Agregación del centro: promedios de Cfinal/Ccat/Cdom y distribución por nivel. */
+function agregar(rs){
+  const g=G();const out={n:rs.length,cfinal:null,nivel:null,dist:[0,0,0,0,0],cats:[],doms:[]};
+  if(!g||!rs.length) return out;
+  const conCal=rs.filter(r=>r.detalle);out.n=conCal.length;if(!conCal.length) return out;
+  out.cfinal=conCal.reduce((a,r)=>a+Number(r.cfinal),0)/conCal.length;out.nivel=nivelDe(out.cfinal,g.final);
+  conCal.forEach(r=>out.dist[LV(r.nivelFinal)]++);
+  g.estructura.forEach((c,ci)=>{
+    const vals=conCal.map(r=>r.detalle.categorias[ci].puntaje);const d=[0,0,0,0,0];conCal.forEach(r=>d[LV(r.detalle.categorias[ci].nivel)]++);
+    const m=vals.reduce((a,b)=>a+b,0)/vals.length;out.cats.push({nombre:c.cat,prom:m,nivel:nivelDe(m,c.r),dist:d});
+  });
+  let di=0;
+  g.estructura.forEach(c=>c.dominios.forEach(dm=>{
+    const idx=di++;const vals=conCal.map(r=>r.detalle.dominios[idx].puntaje);const d=[0,0,0,0,0];conCal.forEach(r=>d[LV(r.detalle.dominios[idx].nivel)]++);
+    const m=vals.reduce((a,b)=>a+b,0)/vals.length;out.doms.push({categoria:c.cat,nombre:dm.dom,prom:m,nivel:nivelDe(m,dm.r),dist:d});
+  }));
+  return out;
+}
+const stack=d=>{const t=d.reduce((a,b)=>a+b,0)||1;return '<div class="stack" title="'+NIVELES.map((n,i)=>n+': '+d[i]).join(' · ')+'">'+d.map((v,i)=>v?'<i style="width:'+(v/t*100)+'%;background:'+COLORS[i]+'"></i>':'').join('')+'</div>';};
+const legend='<div class="legend">'+NIVELES.map((n,i)=>'<span style="--c:'+COLORS[i]+'">'+n+'</span>').join('')+'</div>';
+
+function pintarResultados(){
+  const R=S.res,c=R.centro,g=G();
+  const rs=respFiltradas();const A=agregar(rs);
+  const req=c.guia==='I'?Number(c.trabajadores):c.muestra;
+  const cob=req?Math.round(R.respuestas.length/req*100):0;
+  const giEv=rs.filter(r=>r.gi_evento==='Sí').length,giVal=rs.filter(r=>r.gi_valoracion==='Sí');
+  const areas=[...new Set(R.respuestas.map(r=>r.datosV&&r.datosV.area||'').filter(Boolean))].sort();
+  let h='<div class="row" style="margin-bottom:10px"><button class="btn ghost sm" id="btnVolver">← Centros</button><div><h1 style="margin:0">'+esc(c.razonSocial)+'</h1><div class="muted">'+esc(c.centro)+' · '+esc(c.trabajadores)+' trabajadores · Guía '+(c.guia==='I'?'I':'I + '+c.guia)+'</div></div><span class="sp"></span>'+
+    '<label class="small muted">Periodo <select id="selPer" style="width:auto;padding:6px">'+R.periodos.map(p=>'<option'+(String(p)===String(R.periodo)?' selected':'')+'>'+esc(p)+'</option>').join('')+'</select></label>'+
+    (areas.length?'<label class="small muted">Área <select id="selArea" style="width:auto;padding:6px"><option value="">Todas</option>'+areas.map(a=>'<option'+(a===S.area?' selected':'')+'>'+esc(a)+'</option>').join('')+'</select></label>':'')+'</div>';
+
+  if(R.respuestas.length<req) h+='<div class="notice">'+(c.guia==='III'?'Aún no se alcanza la muestra mínima representativa ('+req+' cuestionarios, Ecuación 1).':'Deben responder todos los trabajadores del centro ('+req+'), numeral 7.1 a).')+' Faltan <b>'+(req-R.respuestas.length)+'</b>. El informe puede generarse, pero indicará la cobertura incompleta.</div>';
+
+  h+='<div class="grid g4" style="margin-bottom:16px">'+
+    '<div class="kpi"><div class="l">Cuestionarios respondidos</div><div class="v">'+R.respuestas.length+' <span class="muted" style="font-size:14px">/ '+req+'</span></div><div class="prog" style="margin-top:6px"><i style="width:'+Math.min(100,cob)+'%"></i></div></div>'+
+    (g?'<div class="kpi"><div class="l">Calificación final promedio'+(S.area?' ('+esc(S.area)+')':'')+'</div><div class="v">'+fmt(A.cfinal)+'</div>'+pill(A.nivel)+'</div>'+
+    '<div class="kpi"><div class="l">Trabajadores en nivel alto o muy alto</div><div class="v">'+(A.dist[3]+A.dist[4])+'</div><div class="muted small">'+(A.n?Math.round((A.dist[3]+A.dist[4])/A.n*100):0)+'% de los evaluados</div></div>':'<div class="kpi"><div class="l">Cuestionario aplicado</div><div class="v" style="font-size:16px">Sólo Guía I</div><div class="muted small">Centro de hasta 15 trabajadores</div></div><div class="kpi"><div class="l">Acontecimiento traumático reportado</div><div class="v">'+giEv+'</div></div>')+
+    '<div class="kpi"><div class="l">Requieren valoración clínica (Guía I)</div><div class="v" style="color:'+(giVal.length?'var(--err)':'var(--navy)')+'">'+giVal.length+'</div><div class="muted small">'+giEv+' reportaron acontecimiento</div></div></div>';
+
+  // Descargas
+  h+='<div class="card"><h2>Descargas en el formato de la norma</h2><div class="dl">'+
+    (g?'<div class="dlc"><b>Informe de resultados (numeral 7.7)</b><p>Datos del centro, objetivo, actividades, método, resultados por categoría y dominio, conclusiones, recomendaciones y datos del responsable. Editable antes de guardar en PDF.</p><div class="row"><button class="btn sm" data-dl="informe">Informe completo</button><button class="btn ghost sm" data-dl="informePub">Versión para trabajadores (7.8)</button></div></div>':
+     '<div class="dlc"><b>Informe Guía I (numeral 5.5)</b><p>Identificación de trabajadores sujetos a acontecimientos traumáticos severos y canalización.</p><div class="row"><button class="btn sm" data-dl="informe">Generar informe</button></div></div>')+
+    '<div class="dlc"><b>Registros en Excel (numeral 5.8)</b><p>Resultados individuales, respuestas por reactivo, calificación por categoría/dominio/dimensión, Guía I, datos del trabajador (Guía V) y programa de intervención.</p><div class="row"><button class="btn sm" data-dl="excel">Descargar .xlsx</button></div></div>'+
+    '<div class="dlc"><b>Cuestionarios individuales</b><p>Cada cuestionario en el formato de la Guía '+(g?c.guia:'I')+' (reactivos y opciones marcadas) con su calificación y la ficha de datos (Guía V).</p><div class="row"><button class="btn sm" data-dl="cuestTodos">Todos (PDF)</button></div></div>'+
+    (g?'<div class="dlc"><b>Programa de intervención (numeral 8.4)</b><p>Áreas y trabajadores sujetos, acciones y medidas por nivel (8.5), fechas, control de avances, evaluación posterior y responsable.</p><div class="row"><button class="btn sm" data-dl="programa">Generar programa</button></div></div>':'')+
+    '<div class="dlc"><b>Canalización Guía I (confidencial)</b><p>Relación nominal de trabajadores que requieren valoración clínica (5.5, 5.6 y 5.8 c).</p><div class="row"><button class="btn sm" data-dl="gi">Generar relación</button></div></div>'+
+    '</div></div>';
+
+  if(g&&A.n){
+    h+='<div class="card"><div class="row"><h2 style="margin:0">Distribución de trabajadores por nivel de riesgo</h2><span class="sp"></span>'+legend+'</div><div style="margin-top:10px">'+
+      NIVELES.map((n,i)=>'<div class="row" style="margin:6px 0"><div style="width:150px">'+n+'</div><div style="flex:1;background:#EEF0F3;border-radius:6px;height:22px"><div style="height:100%;border-radius:6px;background:'+COLORS[i]+';width:'+(A.n?A.dist[i]/A.n*100:0)+'%"></div></div><div class="num" style="width:90px">'+A.dist[i]+' ('+(A.n?Math.round(A.dist[i]/A.n*100):0)+'%)</div></div>').join('')+'</div></div>';
+    h+='<div class="grid g2"><div class="card"><h2>Resultados por categoría</h2><div class="tw"><table><tr><th>Categoría</th><th class="num">Promedio</th><th>Nivel</th><th>Distribución</th></tr>'+
+      A.cats.map(x=>'<tr><td>'+esc(x.nombre)+'</td><td class="num">'+fmt(x.prom)+'</td><td>'+pill(x.nivel)+'</td><td>'+stack(x.dist)+'</td></tr>').join('')+'</table></div></div>'+
+      '<div class="card"><h2>Resultados por dominio</h2><div class="tw"><table><tr><th>Dominio</th><th class="num">Promedio</th><th>Nivel</th><th>Distribución</th></tr>'+
+      A.doms.map(x=>'<tr><td>'+esc(x.nombre)+'<div class="muted small">'+esc(x.categoria)+'</div></td><td class="num">'+fmt(x.prom)+'</td><td>'+pill(x.nivel)+'</td><td>'+stack(x.dist)+'</td></tr>').join('')+'</table></div></div></div>';
+    if(!S.area&&areas.length>1){
+      h+='<div class="card"><h2>Resultados por área</h2><div class="tw"><table><tr><th>Área</th><th class="num">Evaluados</th><th class="num">Cfinal promedio</th><th>Nivel</th><th>Distribución</th></tr>'+
+        areas.map(a=>{const B=agregar(R.respuestas.filter(r=>(r.datosV&&r.datosV.area)===a));return '<tr><td>'+esc(a)+'</td><td class="num">'+B.n+'</td><td class="num">'+fmt(B.cfinal)+'</td><td>'+pill(B.nivel)+'</td><td>'+stack(B.dist)+'</td></tr>';}).join('')+'</table></div>'+
+        '<p class="muted small">Para proteger la confidencialidad, evite difundir resultados de áreas con muy pocos trabajadores.</p></div>';
+    }
+  }
+
+  h+='<div class="card"><div class="row"><h2 style="margin:0">Cuestionarios registrados ('+rs.length+')</h2><span class="sp"></span><input id="buscar" placeholder="Buscar nombre, folio o número" style="max-width:260px"></div><div class="tw" style="margin-top:10px;max-height:520px;overflow:auto"><table id="tblResp"></table></div></div>';
+  $('vRes').innerHTML=h;
+
+  $('btnVolver').onclick=()=>vista('centros');
+  $('selPer').onchange=e=>abrirResultados(c.id,e.target.value);
+  if($('selArea')) $('selArea').onchange=e=>{S.area=e.target.value;pintarResultados();};
+  $('vRes').querySelectorAll('[data-dl]').forEach(b=>b.onclick=()=>DL[b.dataset.dl]());
+  const pintarTabla=()=>{
+    const q=($('buscar').value||'').toLowerCase();
+    const lst=rs.filter(r=>!q||(r.nombre+' '+r.folio+' '+r.numEmpleado).toLowerCase().includes(q));
+    $('tblResp').innerHTML='<tr><th>Folio</th><th>Fecha</th><th>Nombre</th><th>No.</th><th>Área</th>'+(g?'<th class="num">Cfinal</th><th>Nivel</th>':'')+'<th>Guía I</th><th></th></tr>'+
+      lst.map(r=>'<tr><td class="small">'+esc(r.folio)+'</td><td>'+fdate(r.fecha)+'</td><td>'+esc(r.nombre)+'</td><td>'+esc(r.numEmpleado)+'</td><td>'+esc(r.datosV&&r.datosV.area||'')+'</td>'+
+        (g?'<td class="num">'+esc(r.cfinal)+'</td><td>'+pill(r.nivelFinal)+'</td>':'')+
+        '<td>'+(r.gi_valoracion==='Sí'?'<span class="pill lv4">Valoración</span>':r.gi_evento==='Sí'?'<span class="pill lv2">Evento</span>':'<span class="muted small">Sin evento</span>')+'</td>'+
+        '<td><div class="row" style="flex-wrap:nowrap"><button class="btn ghost sm" data-f="'+esc(r.folio)+'" data-a="ver">Cuestionario</button><button class="btn danger sm" data-f="'+esc(r.folio)+'" data-a="del">✕</button></div></td></tr>').join('');
+    $('tblResp').querySelectorAll('button[data-a]').forEach(b=>b.onclick=()=>{const r=R.respuestas.find(x=>x.folio===b.dataset.f);b.dataset.a==='ver'?DL.cuest([r]):eliminarResp(r);});
+  };
+  $('buscar').oninput=pintarTabla;pintarTabla();
+}
+function eliminarResp(r){
+  $('delFolio').textContent=r.folio+' ('+r.nombre+')';$('delMotivo').value='';
+  const d=$('dlgDel');d.showModal();
+  d.onclose=async()=>{if(d.returnValue!=='ok') return;const m=$('delMotivo').value.trim();if(!m){alert('Indique el motivo.');return;}
+    try{await api('eliminarRespuesta',{folio:r.folio,motivo:m});toast('Registro eliminado');abrirResultados(S.res.centro.id,S.res.periodo);}catch(e){alert(e.message);}};
+}
+
+/* ===================== Recomendaciones por dominio (Capítulo 8) ===================== */
+const RECO={
+  'Condiciones en el ambiente de trabajo':'Revisar con la Comisión de Seguridad e Higiene (NOM-019-STPS) las condiciones peligrosas, inseguras, deficientes o insalubres señaladas; integrar los hallazgos al diagnóstico de seguridad y salud en el trabajo (NOM-030-STPS, numeral 7.6) y reforzar la aplicación de las normas de seguridad.',
+  'Carga de trabajo':'8.2 b): revisar y supervisar que la distribución de la carga de trabajo sea equitativa considerando el número de trabajadores, actividades, alcance y capacitación; planificar el trabajo con pausas o periodos de descanso, rotación de tareas y otras medidas para evitar ritmos acelerados; contar con instructivos o procedimientos que definan claramente tareas y responsabilidades.',
+  'Falta de control sobre el trabajo':'8.2 c): involucrar a los trabajadores en la toma de decisiones sobre la organización de su trabajo; acordar y mejorar el margen de libertad y control y desarrollar nuevas competencias; realizar reuniones para atender áreas de oportunidad. 8.2 i): analizar la relación capacitación-tareas y detectar necesidades de capacitación al menos cada dos años.',
+  'Jornada de trabajo':'8.2 e) 2): establecer lineamientos, medidas y límites que eviten jornadas superiores a las previstas en la Ley Federal del Trabajo; revisar tiempo extra, trabajo en días de descanso y rotación de turnos que incluyan turno nocturno.',
+  'Interferencia en la relación trabajo-familia':'8.2 e): involucrar a los trabajadores en la definición de horarios cuando sea posible; apoyos para atender emergencias familiares comprobables; evitar que se atiendan asuntos laborales fuera del horario; promover actividades de integración familiar previo acuerdo con los trabajadores.',
+  'Liderazgo':'8.2 a): acciones para el manejo de conflictos, distribución de tiempos y determinación de prioridades; mecanismos de comunicación entre supervisores y trabajadores; instrucciones claras para atender problemas; capacitación y sensibilización de directivos, gerentes y supervisores. 8.2 h): comunicación directa y frecuente del jefe inmediato con los trabajadores.',
+  'Relaciones en el trabajo':'8.2 a) 2) y 3), 8.2 d): lineamientos para prohibir la discriminación y fomentar la equidad y el respeto; establecer relaciones de apoyo entre trabajadores, supervisores y gerentes; reuniones periódicas de seguimiento al apoyo social; promover la ayuda mutua y el trabajo en equipo; fomentar actividades culturales y deportivas.',
+  'Violencia':'8.1 b) y 8.2 g): difundir información para sensibilizar sobre la violencia laboral; establecer procedimientos de actuación y seguimiento y capacitar a su responsable; informar la forma de denunciar; garantizar mecanismos seguros y confidenciales de quejas. Valorar evaluación específica (p. ej. acoso psicológico) y, en su caso, exámenes médicos y evaluaciones psicológicas (5.6).',
+  'Reconocimiento del desempeño':'8.2 f): mecanismos para reconocer el desempeño sobresaliente, difundir los logros y expresar al trabajador sus posibilidades de desarrollo; retroalimentación periódica del desempeño; revisar la oportunidad del pago y la percepción de equidad en la compensación.',
+  'Insuficiente sentido de pertenencia e, inestabilidad':'8.1 c): acciones que promuevan el sentido de pertenencia a la organización; comunicar los cambios en la organización o condiciones de trabajo (8.2 h 2); analizar las causas de rotación de personal y la percepción de estabilidad laboral.'
+};
+
+/* ===================== Descargas ===================== */
+function abrirDoc(titulo,body,opts){
+  opts=opts||{};
+  const w=window.open('','_blank');
+  if(!w){alert('Permita ventanas emergentes para generar el documento.');return;}
+  w.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>'+esc(titulo)+'</title><style>'+
+  '@page{size:letter;margin:16mm 14mm}body{font-family:Arial,Helvetica,sans-serif;color:#111;font-size:10.5pt;line-height:1.4;margin:0}'+
+  '.bar{position:sticky;top:0;background:#0B2545;color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;z-index:9}.bar button{background:#C9A227;color:#0B2545;border:0;padding:8px 14px;border-radius:6px;font-weight:700;cursor:pointer}.bar span{font-size:12px;opacity:.85}'+
+  '.doc{max-width:190mm;margin:0 auto;padding:18px}.hdr{border-bottom:3px solid #C9A227;padding-bottom:8px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}'+
+  '.hdr .o{font-size:9pt;color:#0B2545;font-weight:700;text-transform:uppercase;letter-spacing:.03em}.hdr .n{font-size:8.5pt;color:#555;text-align:right}'+
+  'h1{font-size:15pt;color:#0B2545;margin:0 0 4px}h2{font-size:12pt;color:#0B2545;margin:18px 0 6px;border-bottom:1px solid #C9D1DC;padding-bottom:3px}h3{font-size:10.5pt;margin:12px 0 4px;color:#13315C}'+
+  'table{border-collapse:collapse;width:100%;margin:6px 0 10px;font-size:9pt;page-break-inside:auto}tr{page-break-inside:avoid}th,td{border:1px solid #9AA5B4;padding:4px 6px;text-align:left;vertical-align:top}th{background:#E8ECF2;color:#0B2545}'+
+  'td.c,th.c{text-align:center}td.r,th.r{text-align:right}.lv0{background:#7FC8DC}.lv1{background:#6BBF59}.lv2{background:#F2C94C}.lv3{background:#F2994A}.lv4{background:#E5484D;color:#fff}'+
+  '.kv td:first-child{width:34%;background:#F4F6F9;font-weight:700}.ed{outline:1px dashed #C9A227;padding:4px;border-radius:3px;min-height:1.4em}.nota{font-size:8.5pt;color:#555}.pb{page-break-before:always}'+
+  '.firma{margin-top:40px;display:flex;justify-content:space-around;text-align:center}.firma div{width:42%;border-top:1px solid #333;padding-top:4px;font-size:9pt}'+
+  '.x{font-weight:700;font-size:11pt}.conf{border:1px solid #B42318;color:#B42318;padding:6px 8px;font-weight:700;font-size:9pt;margin-bottom:10px}'+
+  '@media print{.bar{display:none}.doc{padding:0;max-width:none}.ed{outline:0}}'+
+  '</style></head><body><div class="bar"><button onclick="print()">Imprimir / Guardar como PDF</button><span>'+(opts.editable?'Los textos con borde punteado son editables antes de imprimir. ':'')+'En el cuadro de impresión elija “Guardar como PDF”.</span></div><div class="doc">'+body+'</div></body></html>');
+  w.document.close();
+}
+function encabezado(sub){
+  const c=S.res.centro;
+  return '<div class="hdr"><div><div class="o">'+esc(S.res.config.organizacion||S.config.organizacion||'')+'</div><div style="font-size:9pt">'+esc(c.razonSocial)+' · '+esc(c.centro)+'</div></div><div class="n">NOM-035-STPS-2018<br>'+esc(sub||'')+'<br>Periodo '+esc(S.res.periodo)+'</div></div>';
+}
+const lvTd=n=>'<td class="c lv'+LV(n)+'">'+esc(n)+'</td>';
+const hoy=()=>new Date().toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+
+const DL={
+  informe:()=>informe(false),
+  informePub:()=>informe(true),
+  excel:excel,
+  cuestTodos:()=>{if(!S.res.respuestas.length){alert('No hay cuestionarios.');return;}DL.cuest(respFiltradas());},
+  cuest:cuestionarios,
+  programa:()=>programa(true),
+  gi:relacionGI
+};
+
+function metodoTexto(c){
+  if(c.guia==='I') return 'Se aplicó el cuestionario de la Guía de referencia I de la NOM-035-STPS-2018 para identificar a los trabajadores que fueron sujetos a acontecimientos traumáticos severos durante o con motivo del trabajo, conforme al criterio GR.I.';
+  const g=G(),nI=Object.keys(g.items).length;
+  return '<p><b>a) Cuestionario:</b> '+(c.guia==='II'?'Guía de referencia II, “Cuestionario para identificar los factores de riesgo psicosocial en los centros de trabajo” ('+nI+' reactivos), que comprende los factores del numeral 7.2':'Guía de referencia III, “Cuestionario para identificar los factores de riesgo psicosocial y evaluar el entorno organizacional en los centros de trabajo” ('+nI+' reactivos), que comprende los factores del numeral 7.2 y los aspectos del entorno organizacional del numeral 7.3')+'. Adicionalmente se aplicó la Guía de referencia I (acontecimientos traumáticos severos) y la ficha de datos del trabajador (Guía de referencia V). Al utilizar los cuestionarios de las guías de referencia se da cumplimiento a los numerales '+(c.guia==='II'?'7.1 a), 7.2, 7.4 y 7.5':'7.1 b), 7.2, 7.3, 7.4 y 7.5')+'.</p>'+
+    '<p><b>b) Forma de aplicación:</b> aplicación digital individual mediante enlace o código de acceso del centro de trabajo, '+(c.guia==='II'?'a todos los trabajadores del centro (II.1)':'a una muestra representativa seleccionada aleatoriamente y distribuida por sexo conforme a la Ecuación 1 del numeral III.1, n = 0.9604·N / (0.0025·(N−1) + 0.9604)')+'. Antes de iniciar se presentó al trabajador el objetivo de la evaluación, el aviso de confidencialidad y las instrucciones (considerar las condiciones de los dos últimos meses, no existen respuestas correctas o incorrectas, contestar con sinceridad y completamente). El sistema impide enviar cuestionarios incompletos, registra un solo cuestionario por trabajador y periodo, y aplica primero el cuestionario y al final la ficha de datos del trabajador ('+(c.guia==='II'?'II.2':'III.2')+').</p>'+
+    '<p><b>c) Manera de evaluar:</b> cada respuesta se calificó de 0 a 4 conforme a la '+(c.guia==='II'?'Tabla 2':'Tabla 5')+' (valor de las opciones de respuesta). La calificación del dominio (Cdom) es la suma de los reactivos del dominio; la de la categoría (Ccat), la suma de los reactivos de la categoría; y la calificación final (Cfinal), la suma de todos los reactivos, agrupados conforme a la '+(c.guia==='II'?'Tabla 3':'Tabla 6')+'. Los reactivos de las secciones de atención a clientes o usuarios y de trabajadores que supervisa se califican con 0 cuando la pregunta filtro fue “No”.</p>'+
+    '<p><b>d) Niveles de riesgo:</b> nulo o despreciable, bajo, medio, alto y muy alto, conforme a los rangos de '+(c.guia==='II'?'II.3 c)':'III.3 c)')+' (calificación final: '+['<'+g.final[0],g.final[0]+'–'+(g.final[1]),g.final[1]+'–'+g.final[2],g.final[2]+'–'+g.final[3],'≥'+g.final[3]].map((x,i)=>NIVELES[i]+' '+x).join('; ')+'). Las acciones se determinan con los criterios de la '+(c.guia==='II'?'Tabla 4':'Tabla 7')+'. El resultado del centro de trabajo se expresa como el promedio de las calificaciones de los cuestionarios y la distribución de trabajadores por nivel.</p>';
+}
+
+function tablaRangos(){
+  const g=G();let h='<table><tr><th>Calificación</th>'+NIVELES.map((n,i)=>'<th class="c lv'+i+'">'+n+'</th>').join('')+'</tr>';
+  const fila=(nom,r)=>'<tr><td>'+esc(nom)+'</td><td class="c">&lt; '+r[0]+'</td><td class="c">'+r[0]+' a &lt; '+r[1]+'</td><td class="c">'+r[1]+' a &lt; '+r[2]+'</td><td class="c">'+r[2]+' a &lt; '+r[3]+'</td><td class="c">≥ '+r[3]+'</td></tr>';
+  h+=fila('Calificación final (Cfinal)',g.final);g.estructura.forEach(c=>h+=fila('Categoría: '+c.cat,c.r));g.estructura.forEach(c=>c.dominios.forEach(d=>h+=fila('Dominio: '+d.dom,d.r)));
+  return h+'</table>';
+}
+
+function informe(publico){
+  const R=S.res,c=R.centro,g=G(),rs=R.respuestas,A=agregar(rs),cfg=R.config||{};
+  const req=c.guia==='I'?Number(c.trabajadores):c.muestra;
+  const giEv=rs.filter(r=>r.gi_evento==='Sí').length,giVal=rs.filter(r=>r.gi_valoracion==='Sí');
+  const H=rs.filter(r=>r.sexo==='Masculino').length,M=rs.filter(r=>r.sexo==='Femenino').length;
+  let b=encabezado(publico?'Resultados para consulta de los trabajadores (7.8)':'Informe de resultados (numeral 7.7)');
+  b+='<h1>'+(c.guia==='I'?'Informe de identificación de trabajadores sujetos a acontecimientos traumáticos severos':c.guia==='II'?'Informe de resultados de la identificación y análisis de los factores de riesgo psicosocial':'Informe de resultados de la identificación y análisis de los factores de riesgo psicosocial y evaluación del entorno organizacional')+'</h1><div class="nota">Elaborado conforme a la NOM-035-STPS-2018, publicada en el DOF el 23 de octubre de 2018 · Fecha de emisión: '+hoy()+'</div>';
+  if(publico) b+='<div class="nota" style="margin-top:6px">Documento para difusión: contiene exclusivamente resultados agregados; no incluye datos personales ni resultados individuales.</div>';
+  b+='<h2>a) Datos del centro de trabajo verificado</h2><table class="kv"><tr><td>Nombre, denominación o razón social</td><td>'+esc(c.razonSocial)+'</td></tr>'+(c.rfc&&!publico?'<tr><td>RFC</td><td>'+esc(c.rfc)+'</td></tr>':'')+'<tr><td>Centro de trabajo</td><td>'+esc(c.centro)+'</td></tr><tr><td>Domicilio</td><td class="ed" contenteditable>'+esc(c.domicilio||'')+'</td></tr><tr><td>Actividad principal</td><td class="ed" contenteditable>'+esc(c.actividadPrincipal||'')+'</td></tr><tr><td>Número de trabajadores</td><td>'+esc(c.trabajadores)+(c.hombres!==''&&c.hombres!=null?' ('+esc(c.hombres)+' hombres, '+esc(c.mujeres)+' mujeres)':'')+'</td></tr><tr><td>Periodo de evaluación</td><td>'+esc(R.periodo)+(c.fechaInicio?' · aplicación del '+fdate(c.fechaInicio)+(c.fechaCierre?' al '+fdate(c.fechaCierre):''):'')+'</td></tr></table>';
+  b+='<h2>b) Objetivo</h2><div class="ed" contenteditable>'+esc(cfg.objetivo||'')+'</div>';
+  b+='<h2>c) Principales actividades realizadas en el centro de trabajo</h2><div class="ed" contenteditable>'+esc(c.principalesActividades||'')+'</div>';
+  b+='<h2>d) Método utilizado conforme al numeral 7.4</h2>'+(c.guia==='I'?'<p>'+metodoTexto(c)+'</p>':metodoTexto(c)+'<h3>Niveles de riesgo y forma de determinarlos (7.4 d)</h3>'+tablaRangos());
+  b+='<h2>e) Resultados obtenidos de acuerdo con el numeral 7.4 inciso d)</h2>';
+  b+='<table class="kv"><tr><td>Trabajadores del centro (N)</td><td>'+esc(c.trabajadores)+'</td></tr><tr><td>'+(c.guia==='III'?'Muestra mínima representativa (n, Ecuación 1)':'Cuestionarios requeridos')+'</td><td>'+req+'</td></tr><tr><td>Cuestionarios aplicados y válidos</td><td>'+rs.length+' ('+(req?Math.round(rs.length/req*100):0)+'% de lo requerido) · '+H+' hombres, '+M+' mujeres</td></tr></table>';
+  if(rs.length<req) b+='<p class="nota" style="color:#B42318"><b>Nota:</b> el número de cuestionarios aplicados es menor al requerido por la norma.</p>';
+  if(g&&A.n){
+    b+='<h3>Resultado general del centro de trabajo</h3><table><tr><th>Calificación final promedio (Cfinal)</th><th class="c">Nivel de riesgo</th></tr><tr><td class="r"><b>'+fmt(A.cfinal)+'</b></td>'+lvTd(A.nivel)+'</tr></table>';
+    b+='<h3>Distribución de trabajadores por nivel de riesgo (calificación final)</h3><table><tr>'+NIVELES.map((n,i)=>'<th class="c lv'+i+'">'+n+'</th>').join('')+'<th class="c">Total</th></tr><tr>'+A.dist.map(v=>'<td class="c">'+v+' ('+Math.round(v/A.n*100)+'%)</td>').join('')+'<td class="c">'+A.n+'</td></tr></table>';
+    b+='<h3>Resultados por categoría</h3><table><tr><th>Categoría</th><th class="r">Ccat promedio</th><th class="c">Nivel</th>'+NIVELES.map((n,i)=>'<th class="c lv'+i+'" style="font-size:7.5pt">'+n+'</th>').join('')+'</tr>'+A.cats.map(x=>'<tr><td>'+esc(x.nombre)+'</td><td class="r">'+fmt(x.prom)+'</td>'+lvTd(x.nivel)+x.dist.map(v=>'<td class="c">'+v+'</td>').join('')+'</tr>').join('')+'</table>';
+    b+='<h3>Resultados por dominio</h3><table><tr><th>Categoría</th><th>Dominio</th><th class="r">Cdom promedio</th><th class="c">Nivel</th>'+NIVELES.map((n,i)=>'<th class="c lv'+i+'" style="font-size:7.5pt">'+n+'</th>').join('')+'</tr>'+A.doms.map(x=>'<tr><td>'+esc(x.categoria)+'</td><td>'+esc(x.nombre)+'</td><td class="r">'+fmt(x.prom)+'</td>'+lvTd(x.nivel)+x.dist.map(v=>'<td class="c">'+v+'</td>').join('')+'</tr>').join('')+'</table>';
+    // Dimensiones
+    const dims=[];g.estructura.forEach(ca=>ca.dominios.forEach(d=>d.dims.forEach(dm=>dims.push({cat:ca.cat,dom:d.dom,nom:dm[0],items:dm[1]}))));
+    const conCal=rs.filter(r=>r.detalle);
+    b+='<h3>Promedio por dimensión</h3><table><tr><th>Dominio</th><th>Dimensión</th><th class="c">Reactivos</th><th class="r">Promedio</th><th class="r">Máximo posible</th></tr>'+dims.map((d,i)=>{const m=conCal.reduce((a,r)=>a+r.detalle.dimensiones[i].puntaje,0)/conCal.length;return '<tr><td>'+esc(d.dom)+'</td><td>'+esc(d.nom)+'</td><td class="c">'+d.items.join(', ')+'</td><td class="r">'+fmt(m)+'</td><td class="r">'+d.items.length*4+'</td></tr>';}).join('')+'</table>';
+  }
+  b+='<h3>Identificación de trabajadores sujetos a acontecimientos traumáticos severos (Guía I, numeral 5.5)</h3><table><tr><th>Trabajadores que reportaron haber presenciado o sufrido un acontecimiento traumático severo</th><td class="c">'+giEv+'</td></tr><tr><th>Trabajadores que requieren valoración clínica (criterio GR.I)</th><td class="c">'+giVal.length+'</td></tr></table>'+(publico?'':'<p class="nota">La relación nominal se conserva como anexo confidencial (registro 5.8 c) y no forma parte de la versión para consulta de los trabajadores.</p>');
+  // f) conclusiones
+  let concl='';
+  if(g&&A.n){
+    const altas=A.cats.filter(x=>LV(x.nivel)>=2),domAl=A.doms.filter(x=>LV(x.nivel)>=2).sort((a,b)=>LV(b.nivel)-LV(a.nivel));
+    concl='Se aplicaron '+A.n+' cuestionarios de la Guía de referencia '+c.guia+' en '+esc(c.razonSocial)+' — '+esc(c.centro)+', lo que representa el '+(req?Math.round(A.n/req*100):0)+'% de '+(c.guia==='III'?'la muestra representativa requerida':'los trabajadores del centro')+'. La calificación final promedio fue de '+fmt(A.cfinal)+' puntos, que corresponde a un nivel de riesgo <b>'+A.nivel.toLowerCase()+'</b>. El '+Math.round((A.dist[3]+A.dist[4])/A.n*100)+'% de los trabajadores evaluados obtuvo un nivel alto o muy alto y el '+Math.round(A.dist[2]/A.n*100)+'% un nivel medio. ';
+    concl+=altas.length?'Las categorías con nivel medio o superior son: '+altas.map(x=>esc(x.nombre)+' ('+x.nivel.toLowerCase()+')').join(', ')+'. ':'Ninguna categoría alcanza nivel medio o superior. ';
+    concl+=domAl.length?'Los dominios que requieren atención son: '+domAl.map(x=>esc(x.nombre)+' ('+x.nivel.toLowerCase()+')').join('; ')+'. ':'';
+    concl+=LV(A.nivel)>=2?'Conforme a la '+(c.guia==='II'?'Tabla 4':'Tabla 7')+', se requiere implementar un Programa de intervención (numerales 8.3 y 8.4). ':'';
+  }
+  concl+='En la identificación de acontecimientos traumáticos severos, '+giEv+' trabajador(es) reportaron haber presenciado o sufrido un acontecimiento y '+giVal.length+' requieren valoración clínica, por lo que deberán canalizarse para su atención conforme al numeral 5.5.';
+  b+='<h2>f) Conclusiones</h2><div class="ed" contenteditable>'+concl+'</div>';
+  // g) recomendaciones
+  b+='<h2>g) Recomendaciones y acciones de intervención</h2>';
+  if(g&&A.n){
+    b+='<p><b>Criterio general ('+A.nivel+'):</b> '+esc(CRITERIOS_ACCION[A.nivel])+'</p>';
+    const domAl=A.doms.filter(x=>LV(x.nivel)>=2);
+    if(domAl.length) b+='<table><tr><th>Dominio</th><th class="c">Nivel</th><th>Acciones recomendadas (Capítulo 8)</th></tr>'+domAl.map(x=>'<tr><td>'+esc(x.nombre)+'</td>'+lvTd(x.nivel)+'<td class="ed" contenteditable>'+esc(RECO[x.nombre]||'')+'</td></tr>').join('')+'</table>';
+    b+='<div class="ed" contenteditable><p>Acciones generales: difundir la política de prevención de riesgos psicosociales (5.1, 5.7), los mecanismos seguros y confidenciales de quejas y denuncia (8.1 b) y estos resultados (5.7 e, 7.8); integrar los resultados al diagnóstico de seguridad y salud en el trabajo (7.6); y repetir la evaluación al menos cada dos años (7.9).</p></div>';
+  }
+  if(giVal.length) b+='<p><b>Guía I:</b> canalizar a los '+giVal.length+' trabajador(es) identificados a la institución de seguridad social o privada, o al médico del centro de trabajo, para su valoración clínica (5.5), y practicar exámenes médicos y evaluaciones psicológicas cuando corresponda (5.6). Las intervenciones de tercer nivel deberán realizarse por médico, psicólogo o psiquiatra (8.5 c).</p>';
+  else if(!g) b+='<div class="ed" contenteditable><p>Mantener la difusión de la política de prevención de riesgos psicosociales, de las medidas adoptadas y de los mecanismos de quejas (numerales 5.1, 5.4, 5.7, 8.1 y 8.2).</p></div>';
+  // h) responsable
+  b+='<h2>h) Datos del responsable de la evaluación</h2><table class="kv"><tr><td>Nombre completo</td><td class="ed" contenteditable>'+esc(cfg.responsableNombre||'')+'</td></tr><tr><td>Número de cédula profesional</td><td class="ed" contenteditable>'+esc(cfg.responsableCedula||'')+'</td></tr><tr><td>Puesto</td><td class="ed" contenteditable>'+esc(cfg.responsablePuesto||'')+'</td></tr></table>';
+  b+='<div class="firma"><div>'+esc(cfg.responsableNombre||'Responsable de la evaluación')+'<br>Responsable de la evaluación</div><div>Representante del patrón</div></div>';
+  if(!publico&&g&&A.n&&LV(A.nivel)>=2) b+='<div class="pb"></div>'+programaHTML();
+  abrirDoc((publico?'Resultados NOM-035 ':'Informe NOM-035 ')+c.razonSocial+' '+c.centro+' '+R.periodo,b,{editable:true});
+}
+
+function programaHTML(){
+  const R=S.res,c=R.centro,A=agregar(R.respuestas),cfg=R.config||{};
+  const giVal=R.respuestas.filter(r=>r.gi_valoracion==='Sí').length;
+  const filas=[];
+  filas.push(['Todo el centro de trabajo','Primer nivel (organizacional)','Revisar y difundir la política de prevención de riesgos psicosociales y los mecanismos de quejas; '+(A.nivel?esc(CRITERIOS_ACCION[A.nivel]):'')]);
+  A.doms.filter(x=>LV(x.nivel)>=2).forEach(x=>filas.push(['Áreas/trabajadores con nivel medio o superior en “'+esc(x.nombre)+'” ('+x.nivel.toLowerCase()+')',LV(x.nivel)>=3?'Primer y segundo nivel':'Segundo nivel (grupal)',esc(RECO[x.nombre]||'')]));
+  if(giVal) filas.push([giVal+' trabajador(es) identificados con la Guía I','Tercer nivel (individual)','Canalización para valoración clínica y, en su caso, intervención por médico, psicólogo o psiquiatra (5.5, 5.6, 8.5 c).']);
+  return encabezado('Programa de intervención (numeral 8.4)')+'<h1>Programa para la atención de los factores de riesgo psicosocial</h1><p class="nota">Numerales 8.3, 8.4 y 8.5 de la NOM-035-STPS-2018. Complete fechas, responsables y control de avances.</p>'+
+    '<table><tr><th style="width:22%">a) Áreas de trabajo y/o trabajadores sujetos</th><th style="width:12%">Nivel de acción (8.5)</th><th>b) Tipo de acciones y medidas de control</th><th style="width:10%">c) Fechas programadas</th><th style="width:10%">d) Control de avances</th><th style="width:10%">e) Evaluación posterior</th><th style="width:11%">f) Responsable</th></tr>'+
+    filas.map(f=>'<tr><td class="ed" contenteditable>'+f[0]+'</td><td>'+f[1]+'</td><td class="ed" contenteditable>'+f[2]+'</td><td class="ed" contenteditable></td><td class="ed" contenteditable></td><td class="ed" contenteditable></td><td class="ed" contenteditable>'+esc(cfg.responsableNombre||'')+'</td></tr>').join('')+'</table>'+
+    '<div class="firma"><div>Elaboró</div><div>Autorizó</div></div>';
+}
+function programa(){abrirDoc('Programa de intervención NOM-035 '+S.res.centro.razonSocial,programaHTML(),{editable:true});}
+
+function relacionGI(){
+  const R=S.res,lst=R.respuestas.filter(r=>r.gi_evento==='Sí');
+  let b=encabezado('Guía de referencia I — Registro 5.8 c)')+'<div class="conf">CONFIDENCIAL — Uso exclusivo del responsable de la evaluación y del servicio médico/psicológico.</div><h1>Relación de trabajadores sujetos a acontecimientos traumáticos severos</h1>';
+  if(!lst.length){b+='<p>Ningún trabajador reportó haber presenciado o sufrido un acontecimiento traumático severo en este periodo.</p>';}
+  else b+='<table><tr><th>Folio</th><th>Nombre</th><th>No.</th><th>Área / puesto</th><th class="c">Sec. II</th><th class="c">Sec. III</th><th class="c">Sec. IV</th><th>Requiere valoración</th><th>Criterio GR.I</th><th>Canalizado a / fecha</th></tr>'+
+    lst.map(r=>{const g=r.gi&&r.gi.resultado||{};return '<tr><td>'+esc(r.folio)+'</td><td>'+esc(r.nombre)+'</td><td>'+esc(r.numEmpleado)+'</td><td>'+esc((r.datosV&&r.datosV.area)||'')+(r.datosV&&r.datosV.puesto?' / '+esc(r.datosV.puesto):'')+'</td><td class="c">'+(g.siSecII||0)+'/2</td><td class="c">'+(g.siSecIII||0)+'/7</td><td class="c">'+(g.siSecIV||0)+'/5</td><td class="c '+(r.gi_valoracion==='Sí'?'lv4':'')+'">'+r.gi_valoracion+'</td><td>'+esc((g.criterios||[]).join('; '))+'</td><td class="ed" contenteditable></td></tr>';}).join('')+'</table>';
+  b+='<p class="nota">Criterio GR.I: requiere atención clínica si responde “Sí” en alguna pregunta de la Sección II, en tres o más de la Sección III, o en dos o más de la Sección IV.</p>';
+  abrirDoc('Relación Guía I '+R.centro.razonSocial,b,{editable:true});
+}
+
+function cuestionarios(lst){
+  const R=S.res,c=R.centro,g=G();
+  let b='';
+  lst.forEach((r,k)=>{
+    if(k) b+='<div class="pb"></div>';
+    const v=r.datosV||{},gi=(r.gi&&r.gi.respuestas)||{},cu=r.cuest||{},resp=cu.respuestas||{},fil=cu.filtros||{};
+    b+=encabezado('Cuestionario individual · Confidencial');
+    b+='<table class="kv"><tr><td>Número de cuestionario (folio)</td><td>'+esc(r.folio)+'</td></tr><tr><td>Fecha de aplicación</td><td>'+fdate(r.fecha)+'</td></tr><tr><td>Nombre / No. de empleado</td><td>'+esc(r.nombre)+' / '+esc(r.numEmpleado)+'</td></tr></table>';
+    // Guía I
+    b+='<h2>Guía de referencia I — '+esc(GUIA_I.titulo)+'</h2><table><tr><th>Sección / Pregunta</th><th class="c" style="width:40px">Sí</th><th class="c" style="width:40px">No</th></tr>';
+    GUIA_I.secciones.forEach((s,si)=>{
+      b+='<tr><th colspan="3">'+esc(s.titulo)+(s.pregunta?'<br><span style="font-weight:400">'+esc(s.pregunta)+'</span>':'')+'</th></tr>';
+      s.items.forEach(([n,t])=>{const val=gi[n];const na=si>0&&!(r.gi_evento==='Sí');b+='<tr><td>'+esc(t)+'</td><td class="c x">'+(val===true?'X':'')+'</td><td class="c x">'+(val===false&&!na?'X':'')+'</td></tr>';});
+    });
+    b+='</table><p class="nota">Resultado: '+(r.gi_evento==='Sí'?'reportó acontecimiento traumático severo; '+(r.gi_valoracion==='Sí'?'<b>requiere valoración clínica</b>':'no requiere valoración clínica conforme a GR.I'):'no reportó acontecimiento; no es necesario responder las secciones II a IV (GR.I a).')+'</p>';
+    if(g){
+      b+='<h2>Guía de referencia '+c.guia+' — '+esc(g.titulo)+'</h2><table><tr><th class="c" style="width:26px">#</th><th>Pregunta</th>'+ESCALA.map(e=>'<th class="c" style="width:52px;font-size:7.5pt">'+e+'</th>').join('')+'</tr>';
+      g.bloques.forEach(bl=>{
+        if(bl.filtro){
+          if(bl.introFiltro) b+='<tr><th colspan="7" style="font-weight:400">'+esc(bl.introFiltro)+'</th></tr>';
+          b+='<tr><td></td><td><b>'+esc(bl.preguntaFiltro)+'</b></td><td colspan="5">Sí '+(fil[bl.filtro]?'<b class="x">[X]</b>':'[ ]')+' &nbsp; No '+(!fil[bl.filtro]?'<b class="x">[X]</b>':'[ ]')+'</td></tr>';
+          if(bl.intro) b+='<tr><th colspan="7" style="font-weight:400">'+esc(bl.intro)+'</th></tr>';
+        } else b+='<tr><th colspan="7" style="font-weight:400">'+esc(bl.intro)+'</th></tr>';
+        bl.items.forEach(n=>{const a=resp[n];const ok=a!==undefined&&a!==null&&a!=='';b+='<tr><td class="c">'+n+'</td><td>'+esc(g.items[n])+'</td>'+ESCALA.map((e,i)=>'<td class="c x">'+(ok&&Number(a)===i?'X':'')+'</td>').join('')+'</tr>';});
+      });
+      b+='</table>';
+      if(r.detalle){
+        b+='<h3>Calificación</h3><table><tr><th>Calificación final (Cfinal)</th><td class="r"><b>'+esc(r.cfinal)+'</b></td>'+lvTd(r.nivelFinal)+'</tr></table>';
+        b+='<table><tr><th>Categoría</th><th class="r">Ccat</th><th class="c">Nivel</th></tr>'+r.detalle.categorias.map(x=>'<tr><td>'+esc(x.nombre)+'</td><td class="r">'+x.puntaje+'</td>'+lvTd(x.nivel)+'</tr>').join('')+'</table>';
+        b+='<table><tr><th>Dominio</th><th class="r">Cdom</th><th class="c">Nivel</th></tr>'+r.detalle.dominios.map(x=>'<tr><td>'+esc(x.nombre)+'</td><td class="r">'+x.puntaje+'</td>'+lvTd(x.nivel)+'</tr>').join('')+'</table>';
+      }
+    }
+    b+='<h2>Guía de referencia V — Datos del trabajador</h2><table class="kv">'+GUIA_V.campos.filter(f=>v[f.id]).map(f=>'<tr><td>'+esc(f.label)+'</td><td>'+esc(v[f.id])+'</td></tr>').join('')+'</table>';
+  });
+  abrirDoc('Cuestionarios NOM-035 '+c.razonSocial+(lst.length===1?' '+lst[0].folio:''),b);
+}
+
+function excel(){
+  const R=S.res,c=R.centro,g=G(),rs=R.respuestas,A=agregar(rs),wb=XLSX.utils.book_new();
+  const add=(nombre,aoa,cols)=>{const ws=XLSX.utils.aoa_to_sheet(aoa);if(cols) ws['!cols']=cols.map(w=>({wch:w}));XLSX.utils.book_append_sheet(wb,ws,nombre.slice(0,31));};
+  const req=c.guia==='I'?Number(c.trabajadores):c.muestra;
+  // 1 Resumen
+  const res=[['REGISTRO DE RESULTADOS — NOM-035-STPS-2018 (numeral 5.8)'],[],['Organización',R.config.organizacion||''],['Razón social',c.razonSocial],['RFC',c.rfc||''],['Centro de trabajo',c.centro],['Domicilio',c.domicilio||''],['Actividad principal',c.actividadPrincipal||''],['Periodo',R.periodo],['Total de trabajadores (N)',Number(c.trabajadores)],['Cuestionario aplicado','Guía de referencia '+(c.guia==='I'?'I':'I + '+c.guia)],[c.guia==='III'?'Muestra mínima (Ecuación 1)':'Cuestionarios requeridos',req],['Cuestionarios aplicados',rs.length],['Fecha de generación',new Date().toLocaleString('es-MX')]];
+  if(g&&A.n){res.push([],['Calificación final promedio',Number(A.cfinal.toFixed(2)),A.nivel],[],['Distribución por nivel (calificación final)','Trabajadores','%']);NIVELES.forEach((n,i)=>res.push([n,A.dist[i],Number((A.dist[i]/A.n*100).toFixed(1))]));
+    res.push([],['Categoría','Promedio','Nivel'].concat(NIVELES));A.cats.forEach(x=>res.push([x.nombre,Number(x.prom.toFixed(2)),x.nivel].concat(x.dist)));
+    res.push([],['Dominio','Promedio','Nivel'].concat(NIVELES));A.doms.forEach(x=>res.push([x.nombre,Number(x.prom.toFixed(2)),x.nivel].concat(x.dist)));}
+  res.push([],['Guía I — reportaron acontecimiento',rs.filter(r=>r.gi_evento==='Sí').length],['Guía I — requieren valoración clínica',rs.filter(r=>r.gi_valoracion==='Sí').length]);
+  add('Resumen',res,[42,16,18,12,12,12,12,12]);
+  // 2 Resultados individuales
+  const vcols=GUIA_V.campos.map(f=>f.label);
+  let head=['Folio (No. de cuestionario)','Fecha de aplicación','Nombre','No. empleado'].concat(vcols);
+  if(g){head=head.concat(['Cfinal','Nivel final']);g.estructura.forEach(x=>head.push('Cat: '+x.cat,'Nivel'));g.estructura.forEach(x=>x.dominios.forEach(d=>head.push('Dom: '+d.dom,'Nivel')));}
+  head=head.concat(['GI acontecimiento','GI requiere valoración']);
+  const filas=rs.map(r=>{const v=r.datosV||{};let f=[r.folio,fdate(r.fecha),r.nombre,r.numEmpleado].concat(GUIA_V.campos.map(x=>v[x.id]||''));
+    if(g){f.push(r.cfinal===''?'':Number(r.cfinal),r.nivelFinal);if(r.detalle){r.detalle.categorias.forEach(x=>f.push(x.puntaje,x.nivel));r.detalle.dominios.forEach(x=>f.push(x.puntaje,x.nivel));}}
+    return f.concat([r.gi_evento,r.gi_valoracion]);});
+  add('Resultados individuales',[head].concat(filas));
+  if(g){
+    const nI=Object.keys(g.items).length,items=[...Array(nI)].map((_,i)=>i+1);
+    // 3 Respuestas (texto)
+    add('Respuestas por reactivo',[['Folio','Nombre','Atiende clientes/usuarios','Es jefe'].concat(items.map(n=>n+'. '+g.items[n]))].concat(rs.map(r=>{const cu=r.cuest||{},re=cu.respuestas||{},fi=cu.filtros||{};return [r.folio,r.nombre,fi.clientes?'Sí':'No',fi.jefe?'Sí':'No'].concat(items.map(n=>re[n]===undefined||re[n]===null||re[n]===''?'':ESCALA[Number(re[n])]));})));
+    // 4 Puntajes
+    add('Puntaje por reactivo',[['Folio','Nombre'].concat(items.map(n=>'R'+n)).concat(['Cfinal'])].concat(rs.filter(r=>r.detalle).map(r=>[r.folio,r.nombre].concat(items.map(n=>r.detalle.valores[n])).concat([Number(r.cfinal)]))));
+    // 5 Dimensiones
+    const dims=[];g.estructura.forEach(ca=>ca.dominios.forEach(d=>d.dims.forEach(dm=>dims.push([ca.cat,d.dom,dm[0],dm[1].join(', ')]))));
+    add('Dimensiones',[['Folio','Nombre'].concat(dims.map(d=>d[2]))].concat(rs.filter(r=>r.detalle).map(r=>[r.folio,r.nombre].concat(r.detalle.dimensiones.map(x=>x.puntaje)))));
+    // 6 Tabla de calificación (método)
+    const met=[['Método de calificación — Guía de referencia '+c.guia],[],['Categoría','Dominio','Dimensión','Reactivos']].concat(dims);
+    met.push([],['Reactivos con Siempre=0 … Nunca=4',g.positivos.join(', ')],['Resto de reactivos','Siempre=4 … Nunca=0'],[],['Calificación','Nulo o despreciable','Bajo','Medio','Alto','Muy alto']);
+    const rg=(n,r)=>[n,'< '+r[0],r[0]+' a < '+r[1],r[1]+' a < '+r[2],r[2]+' a < '+r[3],'≥ '+r[3]];
+    met.push(rg('Calificación final',g.final));g.estructura.forEach(x=>met.push(rg('Categoría: '+x.cat,x.r)));g.estructura.forEach(x=>x.dominios.forEach(d=>met.push(rg('Dominio: '+d.dom,d.r))));
+    add('Método y rangos',met,[40,40,48,20,14,14]);
+  }
+  // 7 Guía I
+  const giH=['Folio','Nombre','No. empleado'];GUIA_I.secciones.forEach(s=>s.items.forEach(([n,t])=>giH.push('Sec. '+s.id+' · '+t)));
+  add('Guía I',[giH.concat(['Acontecimiento','Requiere valoración','Criterio GR.I'])].concat(rs.map(r=>{const a=(r.gi&&r.gi.respuestas)||{};const f=[r.folio,r.nombre,r.numEmpleado];for(let i=1;i<=20;i++) f.push(i>6&&r.gi_evento!=='Sí'?'':(a[i]===true?'Sí':'No'));return f.concat([r.gi_evento,r.gi_valoracion,((r.gi&&r.gi.resultado&&r.gi.resultado.criterios)||[]).join('; ')]);})));
+  // 8 Programa
+  if(g&&A.n){
+    const p=[['PROGRAMA DE INTERVENCIÓN (numeral 8.4)'],[],['a) Áreas / trabajadores sujetos','Nivel de acción (8.5)','b) Acciones y medidas de control','c) Fechas programadas','d) Control de avances','e) Evaluación posterior','f) Responsable']];
+    A.doms.filter(x=>LV(x.nivel)>=2).forEach(x=>p.push(['Nivel '+x.nivel.toLowerCase()+' en '+x.nombre,LV(x.nivel)>=3?'Primer y segundo nivel':'Segundo nivel',RECO[x.nombre]||'','','','',R.config.responsableNombre||'']));
+    const gv=rs.filter(r=>r.gi_valoracion==='Sí').length;if(gv) p.push([gv+' trabajador(es) Guía I','Tercer nivel','Canalización para valoración clínica (5.5, 5.6)','','','',R.config.responsableNombre||'']);
+    add('Programa 8.4',p,[36,20,80,16,16,16,24]);
+  }
+  XLSX.writeFile(wb,'NOM035_Registros_'+slug(c.razonSocial+'_'+c.centro)+'_'+R.periodo+'.xlsx');
+}
+
+/* ===================== DEMO (sin servidor) ===================== */
+const DEMO={
+  db:null,
+  init(){
+    const areas=['Enfermería','Urgencias','Administración','Laboratorio','Mantenimiento','Farmacia'];
+    const centros=[
+      {id:'D1',razonSocial:'DEMO Hospital del Pacífico, S.A. de C.V.',rfc:'DHP000000XX0',centro:'Hospital sede San José',domicilio:'Blvd. Ejemplo 100, San José del Cabo, B.C.S.',actividadPrincipal:'Servicios hospitalarios',principalesActividades:'Atención médica de urgencias, hospitalización, quirófano, laboratorio clínico, imagenología y servicios administrativos.',trabajadores:180,hombres:72,mujeres:108,codigo:'DEMO01',periodo:'2026',activo:true,fechaInicio:'2026-09-01',fechaCierre:'2026-09-30'},
+      {id:'D2',razonSocial:'DEMO Clínica Dermatológica, S.C.',rfc:'',centro:'Clínica Cabo San Lucas',domicilio:'Av. Ejemplo 25, Cabo San Lucas, B.C.S.',actividadPrincipal:'Consulta dermatológica y procedimientos ambulatorios',principalesActividades:'Consulta externa, procedimientos ambulatorios, recepción y cobranza.',trabajadores:28,hombres:8,mujeres:20,codigo:'DEMO02',periodo:'2026',activo:true},
+      {id:'D3',razonSocial:'DEMO Ambulancias del Golfo, S.A.',rfc:'',centro:'Base Loreto',domicilio:'Calle Ejemplo s/n, Loreto, B.C.S.',actividadPrincipal:'Atención prehospitalaria',principalesActividades:'Traslados y atención prehospitalaria.',trabajadores:12,hombres:9,mujeres:3,codigo:'DEMO03',periodo:'2026',activo:true}
+    ];
+    const rnd=(a)=>a[Math.floor(Math.random()*a.length)];
+    const resp=[];
+    const genera=(c,n)=>{
+      const guia=guiaPorTamano(c.trabajadores);
+      for(let k=0;k<n;k++){
+        const sesgo=Math.random()*1.6-0.3; // perfil del trabajador
+        const gi={};for(let i=1;i<=6;i++) gi[i]=Math.random()<0.012;const ev=Object.values(gi).some(Boolean);for(let i=7;i<=20;i++) gi[i]=ev?Math.random()<0.35:false;
+        const r={folio:'N035-'+c.codigo+'-'+(1000+k),fecha:new Date(Date.now()-Math.random()*20*864e5).toISOString(),centroId:c.id,periodo:c.periodo,nombre:'Trabajador(a) demo '+(k+1),numEmpleado:String(5000+k),guia:guia};
+        const v={sexo:Math.random()<(c.mujeres/c.trabajadores)?'Femenino':'Masculino',edad:rnd(GUIA_V.campos[1].opciones.slice(1,9)),estadoCivil:rnd(GUIA_V.campos[2].opciones),estudios:rnd(['Preparatoria o Bachillerato','Técnico Superior','Licenciatura','Maestría']),estudiosEstado:'Terminada',puesto:rnd(['Enfermera(o) general','Médico adscrito','Auxiliar administrativo','Químico','Técnico de mantenimiento','Paramédico']),area:guia==='III'?rnd(areas):rnd(areas.slice(0,3)),tipoPuesto:rnd(GUIA_V.campos[7].opciones),contratacion:'Tiempo indeterminado',tipoPersonal:rnd(['Confianza','Ninguno']),jornada:rnd(GUIA_V.campos[10].opciones),rotacion:rnd(['Sí','No']),tiempoPuesto:rnd(GUIA_V.campos[12].opciones.slice(0,5)),experiencia:rnd(GUIA_V.campos[13].opciones.slice(1,7))};
+        r.sexo=v.sexo;r.datosV=v;
+        const gir=evaluarGuiaI(gi);r.gi={respuestas:gi,resultado:gir};r.gi_evento=gir.evento?'Sí':'No';r.gi_valoracion=gir.requiereValoracion?'Sí':'No';
+        if(guia!=='I'){
+          const g=guia==='II'?GUIA_II:GUIA_III;const pos={};g.positivos.forEach(n=>pos[n]=1);
+          const fil={clientes:Math.random()<0.8,jefe:Math.random()<0.2};const re={};
+          itemsRequeridos(g,fil).forEach(n=>{let riesgo=Math.max(0,Math.min(4,Math.round(0.7+sesgo+(Math.random()*2-1)+(v.area==='Urgencias'?0.6:0))));re[n]=pos[n]?riesgo:4-riesgo;});
+          const cal=calificarGuia(guia,re,fil);r.cuest={respuestas:re,filtros:fil};r.cfinal=cal.cfinal;r.nivelFinal=cal.nivelFinal;r.detalle={categorias:cal.categorias,dominios:cal.dominios,dimensiones:cal.dimensiones,valores:cal.valores};
+        }else{r.cfinal='';r.nivelFinal='';r.detalle=null;}
+        resp.push(r);
+      }
+    };
+    genera(centros[0],128);genera(centros[1],24);genera(centros[2],11);
+    this.db={centros,resp,config:{organizacion:'Grupo Hospitalario DEMO',responsableNombre:'Nombre del responsable',responsableCedula:'0000000',responsablePuesto:'Director de Capital Humano',objetivo:'Identificar y analizar los factores de riesgo psicosocial y, en su caso, evaluar el entorno organizacional del centro de trabajo, así como identificar a los trabajadores que fueron sujetos a acontecimientos traumáticos severos, conforme a la NOM-035-STPS-2018, con el fin de establecer las medidas de prevención y control correspondientes.',avisoPrivacidad:'La información que proporcione es estrictamente confidencial y será utilizada exclusivamente para fines de mejora del ambiente de trabajo.'}};
+  },
+  call(a,b){
+    const db=this.db;
+    const lista=()=>db.centros.map(c=>{const r=db.resp.filter(x=>x.centroId===c.id&&String(x.periodo)===String(c.periodo));return Object.assign({},c,{guia:guiaPorTamano(c.trabajadores),muestra:guiaPorTamano(c.trabajadores)==='III'?tamanoMuestra(c.trabajadores):Number(c.trabajadores),obligaciones:obligacionesPorTamano(c.trabajadores),respondidos:r.length,valoracion:r.filter(x=>x.gi_valoracion==='Sí').length});});
+    switch(a){
+      case 'login':return{token:'demo'};
+      case 'config':return db.config;
+      case 'guardarConfig':Object.assign(db.config,b.config);return db.config;
+      case 'cambiarClave':throw new Error('No disponible en modo demostración.');
+      case 'centros':return lista();
+      case 'guardarCentro':{const c=b.centro;if(c.id){const i=db.centros.findIndex(x=>x.id===c.id);db.centros[i]=Object.assign(db.centros[i],c);return db.centros[i];}c.id='D'+Date.now();c.codigo=Math.random().toString(36).slice(2,8).toUpperCase();db.centros.push(c);return c;}
+      case 'eliminarCentro':{if(db.resp.some(r=>r.centroId===b.id)) throw new Error('No se puede eliminar: el centro tiene evaluaciones registradas (deben conservarse, numerales 5.8 y 10.4). Desactívelo en su lugar.');db.centros=db.centros.filter(c=>c.id!==b.id);return true;}
+      case 'resultados':{const c=lista().find(x=>x.id===b.centroId);const per=b.periodo||c.periodo;const todas=db.resp.filter(r=>r.centroId===c.id);return{centro:c,periodo:per,periodos:[...new Set(todas.map(r=>String(r.periodo)).concat([String(c.periodo)]))],respuestas:todas.filter(r=>String(r.periodo)===String(per)),config:db.config};}
+      case 'eliminarRespuesta':db.resp=db.resp.filter(r=>r.folio!==b.folio);return true;
+    }
+    throw new Error('Acción no disponible');
+  }
+};
+
+if(S.token&&API) entrar();
+if(qs.get('demo')!==null){S.demo=true;DEMO.init();$('demoBanner').classList.remove('hidden');entrar();}
+})();
+</script>
+</body>
+</html>
